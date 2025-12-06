@@ -3,41 +3,67 @@ package top.writerpass.micromessage.core
 import io.github.classgraph.ClassGraph
 import io.github.classgraph.ScanResult
 import org.jetbrains.exposed.sql.Table
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-import top.writerpass.micromessage.common.utils.WithLogger
-import top.writerpass.micromessage.common.utils.logWrapper
+//import org.slf4j.Logger
+//import org.slf4j.LoggerFactory
+import top.writerpass.kmplibrary.utils.println
+//import top.writerpass.micromessage.common.utils.WithLogger
+//import top.writerpass.micromessage.common.utils.logWrapper
 import top.writerpass.micromessage.core.data.base.BaseRouting
 
-class ClassScanner : WithLogger {
+class ClassScanner {
 //    override val logger = LoggerFactory.getLogger(ClassScanner::class)
 
-    private val SERVICE_PACKAGE = "top.writerpass.micromessage.server.core.data.service"
+    private val SERVICE_PACKAGE = "top.writerpass.micromessage.core.data.service"
+    // top/writerpass/micromessage/core/data/service
     val tables: Array<Table>
     val routings: Array<BaseRouting>
 
     init {
-        logWrapper("scan classes under [$SERVICE_PACKAGE]") {
+
+        val a = {
             val scanResult = ClassGraph()
                 .enableClassInfo()
                 .acceptPackages(SERVICE_PACKAGE)
                 .scan()
             val tableInstances = scanResult.tables().also { its ->
                 its.forEach { it ->
-                    "Table: [${it::class.qualifiedName}]".logi()
+                    "Table: [${it::class.qualifiedName}]".println()
                 }
             }
 
             val routingInstances = scanResult.routings().also { its ->
                 its.forEach { it ->
-                    "Routing: [${it::class.qualifiedName}]".logi()
+                    "Routing: [${it::class.qualifiedName}]".println()
                 }
             }
             tableInstances to routingInstances
-        }.also {
+        }
+
+        a().also {
             tables = it.first
             routings = it.second
         }
+//        logWrapper("scan classes under [$SERVICE_PACKAGE]") {
+//            val scanResult = ClassGraph()
+//                .enableClassInfo()
+//                .acceptPackages(SERVICE_PACKAGE)
+//                .scan()
+//            val tableInstances = scanResult.tables().also { its ->
+//                its.forEach { it ->
+//                    "Table: [${it::class.qualifiedName}]".logi()
+//                }
+//            }
+//
+//            val routingInstances = scanResult.routings().also { its ->
+//                its.forEach { it ->
+//                    "Routing: [${it::class.qualifiedName}]".logi()
+//                }
+//            }
+//            tableInstances to routingInstances
+//        }.also {
+//            tables = it.first
+//            routings = it.second
+//        }
     }
 
     private fun ScanResult.tables(): Array<Table> {
@@ -56,5 +82,5 @@ class ClassScanner : WithLogger {
             .toTypedArray()
     }
 
-    override val logger: Logger = LoggerFactory.getLogger("ClassScanner")
+//    override val logger: Logger = LoggerFactory.getLogger("ClassScanner")
 }

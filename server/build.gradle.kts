@@ -11,9 +11,17 @@ version = "1.0.0"
 dependencies{
     implementation(libs.kotlinx.datetime)
 
-    implementation("top.writerpass.libs:KMPLibrary:1.0.0")
-    implementation("top.writerpass.libs:CMPLibrary:1.0.0")
-    implementation("io.github.classgraph:classgraph:4.8.184")
+    implementation("top.writerpass.libs:KMPLibrary:1.0.0") {
+        exclude(group = "org.slf4j")
+        exclude(group = "ch.qos.logback")
+    }
+    implementation("top.writerpass.libs:CMPLibrary:1.0.0") {
+        exclude(group = "org.slf4j")
+        exclude(group = "ch.qos.logback")
+    }
+    implementation("io.github.classgraph:classgraph:4.8.184"){
+        exclude(group = "org.slf4j")
+    }
     implementation(ktorLibs.serialization.kotlinx.json)
     implementation(ktorLibs.server.core)
     implementation(ktorLibs.server.websockets)
@@ -39,7 +47,13 @@ dependencies{
     implementation(libs.exposed.dao)
     implementation(libs.exposed.jdbc)
     implementation(libs.h2)
-    implementation(libs.koin.ktor)
-    implementation(libs.koin.logger.slf4j)
-    implementation(libs.logback)
+
+//    implementation("org.slf4j:slf4j-api:2.0.13")
+//    implementation("ch.qos.logback:logback-classic:1.4.14")
+
+
+//    implementation(libs.koin.ktor)
+//    implementation(libs.koin.logger.slf4j)
+//    implementation(libs.logback)
+//    implementation("org.slf4j:slf4j-api:1.7.32")
 }

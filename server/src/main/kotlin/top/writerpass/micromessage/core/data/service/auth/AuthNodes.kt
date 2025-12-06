@@ -12,9 +12,9 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import top.writerpass.kmplibrary.utils.println
 import top.writerpass.micromessage.utils.PasswordUtil
 import top.writerpass.micromessage.utils.SessionTokenGenerator
-import top.writerpass.micromessage.common.utils.WithLogger
 import top.writerpass.micromessage.core.data.enums.CredentialType
 import top.writerpass.micromessage.core.data.enums.IdentifierType
 import top.writerpass.micromessage.core.data.service.auth.data.Credential
@@ -39,7 +39,7 @@ object AuthNodes {
         )
     }
 
-    object Password : AuthNode, WithLogger {
+    object Password : AuthNode {
 
         override val name: String = "login"
         override val realmInfo: String = "Access to the '/api/v1/auth/login' path"
@@ -89,10 +89,10 @@ object AuthNodes {
             }
         }
 
-        override val logger: Logger = LoggerFactory.getLogger(this::class.simpleName)
+//        override val logger: Logger = LoggerFactory.getLogger(this::class.simpleName)
     }
 
-    object RefreshToken : AuthNode, WithLogger {
+    object RefreshToken : AuthNode {
         override val name: String = "refresh-token"
         override val realmInfo: String = "Access to the '/api/v1/auth/refresh' path"
 
@@ -100,7 +100,7 @@ object AuthNodes {
             bearer(name) {
                 realm = this@RefreshToken.realmInfo
                 authenticate { tokenCredential ->
-                    "Authentication@refresh-login token=${tokenCredential.token}".logi()
+                    "Authentication@refresh-login token=${tokenCredential.token}".println()
                     if (tokenCredential.token == "asdfghjkl") {
                         UserIdPrincipal(tokenCredential.token)
                     } else {
@@ -110,10 +110,10 @@ object AuthNodes {
             }
         }
 
-        override val logger: Logger = LoggerFactory.getLogger(this::class.simpleName)
+//        override val logger: Logger = LoggerFactory.getLogger(this::class.simpleName)
     }
 
-    object NormalAccess : AuthNode, WithLogger {
+    object NormalAccess : AuthNode {
         override val name: String = "normal-access"
         override val realmInfo: String = "Access to the normal api path"
 
@@ -141,6 +141,6 @@ object AuthNodes {
             }
         }
 
-        override val logger: Logger = LoggerFactory.getLogger(this::class.simpleName)
+//        override val logger: Logger = LoggerFactory.getLogger(this::class.simpleName)
     }
 }

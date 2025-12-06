@@ -10,6 +10,7 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import top.writerpass.kmplibrary.utils.println
 import top.writerpass.micromessage.common.request.RegisterRequest
 import top.writerpass.micromessage.common.response.RegisterResponse
 import top.writerpass.micromessage.core.data.base.BaseRouting
@@ -113,7 +114,7 @@ object AuthRouting : BaseRouting {
                 routeWrapper {
                     post("/refresh") {
                         val principal = call.principal<UserIdPrincipal>()
-                        "refresh authorization=${principal?.name}".logi()
+                        "refresh authorization=${principal?.name}".println()
                         call.respond("refresh authorization=${principal?.name}")
                     }
                 }

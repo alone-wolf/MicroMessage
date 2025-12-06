@@ -2,11 +2,11 @@ package top.writerpass.micromessage.server
 
 import org.h2.tools.Server
 import org.jetbrains.exposed.sql.Database
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-import top.writerpass.micromessage.common.utils.WithLogger
+//import org.slf4j.Logger
+//import org.slf4j.LoggerFactory
+//import top.writerpass.micromessage.common.utils.WithLogger
 
-class DatabaseContainer: WithLogger{
+class DatabaseContainer{
     val database = Database.connect(
         url = "jdbc:h2:file:./db.h2/storage;DB_CLOSE_DELAY=-1",
         user = "root",
@@ -26,5 +26,5 @@ class DatabaseContainer: WithLogger{
         webServer.start()
     }
 
-    override val logger: Logger = LoggerFactory.getLogger("DatabaseContainer")
+//    override val logger: Logger = LoggerFactory.getLogger("DatabaseContainer")
 }
