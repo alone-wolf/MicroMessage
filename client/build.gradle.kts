@@ -79,6 +79,9 @@ kotlin {
                 implementation(libs.kstore.file)
 
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1")  // 或最新版本
+
+                implementation(project(":server"))
+                implementation(project(":sdk"))
             }
         }
 //        val androidMain by getting {

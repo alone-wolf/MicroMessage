@@ -18,6 +18,7 @@ import top.writerpass.micromessage.client.LocalSnackbarHostState
 import top.writerpass.micromessage.client.rememberNavControllerWrapper
 import top.writerpass.micromessage.client.rememberViewModelStoreOwner
 import top.writerpass.micromessage.client.windows.AppMainWindow
+import top.writerpass.micromessage.sdk.ApiClient
 
 /**
  * 1. 登录/注册/重置密码 vv
@@ -45,10 +46,15 @@ import top.writerpass.micromessage.client.windows.AppMainWindow
  * 16. 高级管理（支付、钱包等）
  */
 
+val apiClient = ApiClient(
+    baseUrl = "http://127.0.0.1:8080"
+)
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @DelicateCoroutinesApi
 fun main() {
-//    GlobalScope.launch { applicationServer() }
+    GlobalScope.launch { applicationServer() }
 
     application {
         LaunchedEffect(ApplicationState.showMainWindow) {
