@@ -12,7 +12,7 @@ suspend fun applicationServer(){
     Singletons.databaseContainer.startWebServer()
 
     val serverContainer = ServerContainer(
-        config = ServerConfig.Companion.default,
+        config = ServerConfig.default,
         extraModules = {
             install(Authentication) {
                 AuthNodes.Password.run { install() }

@@ -24,6 +24,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import top.writerpass.kmplibrary.utils.println
+import top.writerpass.micromessage.common.utils.WithLogger
+import top.writerpass.micromessage.common.utils.logWrapper
 //import top.writerpass.micromessage.common.utils.WithLogger
 //import top.writerpass.micromessage.common.utils.logWrapper
 import top.writerpass.micromessage.core.data.service.auth.AuthNodes
@@ -47,47 +49,43 @@ data class DebugDump(
     val clientIP: String?, val scheme: String,
 
     // origin host info
-    val host_local: String?, val host_server: String?, val port_local: Int, val port_server: Int,
+    val host_local: String?,
+    val host_server: String?,
+    val port_local: Int,
+    val port_server: Int,
 
-    val protocol: String, val contentType: String, val contentLength: Long?,
+    val protocol: String,
+    val contentType: String,
+    val contentLength: Long?,
 
     // body 一律用 String 容器
     val body: String
 )
 
 
-class Register {
-//    override val logger: Logger = LoggerFactory.getLogger("Register")
+class Register: WithLogger {
+    override val logger: Logger = LoggerFactory.getLogger("Register")
 
     fun registerTables() {
         val database: Database = Singletons.databaseContainer.database
-        transaction(database) {
-            SchemaUtils.create(
-                *Singletons.classScanner.tables
-            )
+        logWrapper("register database tables") {
+            transaction(database) {
+                SchemaUtils.create(
+                    *Singletons.classScanner.tables
+                )
+            }
         }
-//        logWrapper("register database tables") {
-//            transaction(database) {
-//                SchemaUtils.create(
-//                    *Singletons.classScanner.tables
-//                )
-//            }
-//        }
     }
 
     fun registerServiceModules(application: Application) {
         application.routing {
             registerRoutes()
         }.let {
-            it.getAllRoutes().forEach { route ->
-                "Route: $route".println()
+            logWrapper("list route") {
+                it.getAllRoutes().forEach { route ->
+                    "Route: $route".logi()
+                }
             }
-
-//            logWrapper("list route") {
-//                it.getAllRoutes().forEach { route ->
-//                    "Route: $route".logi()
-//                }
-//            }
         }
     }
 
