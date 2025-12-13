@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.OnlinePrediction
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.QrCode2
 import androidx.compose.material.icons.filled.Settings
@@ -37,6 +38,7 @@ import top.writerpass.micromessage.client.LocalMicroMessageSdkViewModel
 import top.writerpass.micromessage.client.LocalNavController
 import top.writerpass.micromessage.client.navigation.pages.base.IMainPage
 import top.writerpass.micromessage.client.navigation.pages.global.MyQrCodePage
+import top.writerpass.micromessage.client.navigation.pages.global.SessionsPage
 import top.writerpass.micromessage.client.navigation.pages.global.SettingsPage
 
 
@@ -114,11 +116,18 @@ object MePage : IMainPage {
                 ) {
                     navController.open(SettingsPage)
                 }
+
+                aa(
+                    "Sessions",
+                    Icons.Default.OnlinePrediction
+                ){
+                    navController.open(SessionsPage)
+                }
                 aa(
                     "Logout",
                     Icons.AutoMirrored.Filled.Logout
                 ) {
-                    microMessageSdkViewModel.logout() {
+                    microMessageSdkViewModel.logout {
                         navController.logout()
                     }
                 }

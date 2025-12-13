@@ -10,6 +10,7 @@ import top.writerpass.micromessage.client.navigation.pages.global.PrivateChatPag
 import top.writerpass.micromessage.client.navigation.pages.global.RegisterPage
 import top.writerpass.micromessage.client.navigation.pages.global.ResetPasswordPage
 import top.writerpass.micromessage.client.navigation.pages.global.SearchPage
+import top.writerpass.micromessage.client.navigation.pages.global.SessionsPage
 import top.writerpass.micromessage.client.navigation.pages.global.SettingsPage
 import top.writerpass.micromessage.client.navigation.pages.global.UserProfilePage
 import top.writerpass.micromessage.client.navigation.pages.global.VideoCallPage
@@ -55,7 +56,8 @@ object Pages {
         SearchPage,
         SettingsPage,
         AudioCallPage,
-        VideoCallPage
+        VideoCallPage,
+        SessionsPage
     )
 
     val pages = mainPages + globalPages

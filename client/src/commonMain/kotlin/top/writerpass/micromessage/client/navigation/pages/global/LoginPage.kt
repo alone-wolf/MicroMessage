@@ -20,7 +20,7 @@ import top.writerpass.cmplibrary.compose.ables.MutableStateComposeExt.CxOutlined
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxText
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxTextButton
 import top.writerpass.cmplibrary.utils.Mutable
-import top.writerpass.micromessage.LoginCredentialStore
+import top.writerpass.micromessage.AuthStore
 import top.writerpass.micromessage.client.LocalMicroMessageSdkViewModel
 import top.writerpass.micromessage.client.LocalNavController
 import top.writerpass.micromessage.client.navigation.pages.base.IPage
@@ -58,9 +58,14 @@ object LoginPage : IPage {
                         visualTransformation = remember { PasswordVisualTransformation() }
                     )
                     "Login".CxTextButton {
-                        LoginCredentialStore.username = username.value
-                        LoginCredentialStore.passwordHash0 = password.value
-                        microMessageSdkViewModel.login {
+//                        AuthStore.updateLoginInfo(
+//                            username.value,
+//                            password.value
+//                        )
+                        microMessageSdkViewModel.login(
+                            username.value,
+                            password.value
+                        ) {
                             navController.login()
                         }
                     }
