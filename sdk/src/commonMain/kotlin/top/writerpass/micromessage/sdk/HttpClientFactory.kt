@@ -1,11 +1,9 @@
 package top.writerpass.micromessage.sdk
 
 import io.ktor.client.HttpClient
-import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
-import io.ktor.client.plugins.HttpTimeoutConfig
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.header
@@ -15,8 +13,8 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import top.writerpass.kmplibrary.utils.println
 import top.writerpass.micromessage.AuthStore
-import top.writerpass.micromessage.common.utils.dump
-import top.writerpass.micromessage.common.utils.print
+import top.writerpass.micromessage.utils.dump
+import top.writerpass.micromessage.utils.print
 import top.writerpass.micromessage.ktorClientEngine
 
 object HttpClientFactory {
@@ -58,13 +56,13 @@ object HttpClientFactory {
                     }
 
                     "/api/v1/auth/logout" -> {
-                        AuthStore.getToken()?.let { t ->
+                        AuthStore.getToken()?.token?.let { t ->
                             bearerAuth(t)
                         }
                     }
 
                     else -> {
-                        AuthStore.getToken()?.let { t ->
+                        AuthStore.getToken()?.token?.let { t ->
                             bearerAuth(t)
                         }
                     }

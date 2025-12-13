@@ -11,8 +11,8 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import top.writerpass.kmplibrary.utils.println
-import top.writerpass.micromessage.common.request.RegisterRequest
-import top.writerpass.micromessage.common.response.RegisterResponse
+import top.writerpass.micromessage.core.data.service.auth.request.RegisterRequest
+import top.writerpass.micromessage.core.data.service.auth.response.RegisterResponse
 import top.writerpass.micromessage.core.data.base.BaseRouting
 import top.writerpass.micromessage.core.data.enums.CredentialType
 import top.writerpass.micromessage.core.data.enums.IdentifierType
@@ -21,6 +21,7 @@ import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionEntit
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionTable
 import top.writerpass.micromessage.core.data.service.auth.principal.UserInfoPrincipal
 import top.writerpass.micromessage.core.data.service.auth.request.ResetPasswordRequest
+import top.writerpass.micromessage.core.data.service.auth.request.SessionsResponse
 import top.writerpass.micromessage.core.data.service.user.entity.UserEntity
 import top.writerpass.micromessage.core.data.service.user.entity.UserIdentifierEntity
 import top.writerpass.micromessage.core.data.service.user.table.UserIdentifierTable
@@ -34,7 +35,9 @@ import kotlin.time.ExperimentalTime
 
 @Serializable
 data class LoginResponse(
-    val token: String
+    val token: String,
+    val refreshToken: String,
+    val sessionId: Long, // sessionId
 )
 
 object AuthRouting : BaseRouting {
@@ -103,7 +106,13 @@ object AuthRouting : BaseRouting {
                 routeWrapper {
                     post("/login") {
                         call.principal<UserInfoPrincipal>()?.let { principal ->
-                            call.returnOk(LoginResponse(principal.session.sessionToken))
+                            call.returnOk(
+                                LoginResponse(
+                                    principal.session.sessionToken,
+                                    refreshToken = "",
+                                    sessionId = principal.session.id
+                                )
+                            )
                         } ?: call.returnUnauthorized("Unauthorized")
                     }
                 }
@@ -143,8 +152,12 @@ object AuthRouting : BaseRouting {
                             val sessions = newSuspendedTransaction {
                                 LoginSessionEntity.find {
                                     LoginSessionTable.userId eq userId
-                                }.map { it.toData() }
-                                // TODO remove token in the returns
+                                }.map {
+                                    SessionsResponse(
+                                        it.id.value,
+                                        it.expiresAt
+                                    )
+                                }
                             }
                             call.returnOk(sessions)
                         }

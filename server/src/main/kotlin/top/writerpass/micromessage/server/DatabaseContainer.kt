@@ -4,7 +4,7 @@ import org.h2.tools.Server
 import org.jetbrains.exposed.sql.Database
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import top.writerpass.micromessage.common.utils.WithLogger
+import top.writerpass.micromessage.utils.WithLogger
 
 class DatabaseContainer: WithLogger{
     val database = Database.connect(

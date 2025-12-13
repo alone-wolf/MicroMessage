@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import top.writerpass.kmplibrary.coroutine.withContextMain
 import top.writerpass.kmplibrary.utils.println
 import top.writerpass.micromessage.AuthStore
-import top.writerpass.micromessage.common.response.SessionsResponse
+import top.writerpass.micromessage.response.SessionsResponse
 
 class MicroMessageSdkViewModel : BaseViewModel() {
     fun register(username: String, password: String, onSuccess: () -> Unit) {
@@ -48,6 +48,12 @@ class MicroMessageSdkViewModel : BaseViewModel() {
                     sessionList = it
                 }
             }
+        }
+    }
+
+    fun logoutSession(id: Long){
+        runInViewModel {
+            Singleton.apiClient.auth.logoutSession(id)
         }
     }
 }

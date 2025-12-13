@@ -1,19 +1,20 @@
 package top.writerpass.micromessage
 
+import top.writerpass.micromessage.response.LoginResponse
 import java.util.concurrent.atomic.AtomicReference
 
 object AuthStore {
     private val tokenRef =
-        AtomicReference<String?>(null)
+        AtomicReference<LoginResponse?>(null)
 
-    fun updateToken(t: String) {
-        tokenRef.set(t)
+    fun updateToken(loginResponse: LoginResponse) {
+        tokenRef.set(loginResponse)
     }
 
     fun clearToken() {
         tokenRef.set(null)
     }
 
-    fun getToken(): String? =
+    fun getToken(): LoginResponse? =
         tokenRef.get()
 }

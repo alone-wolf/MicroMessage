@@ -1,4 +1,4 @@
-package top.writerpass.micromessage.common
+package top.writerpass.micromessage
 
 open class PathNode(
     private val segment: String,
@@ -39,6 +39,7 @@ object ServerRoutes {
 
                 object Register : PathNode("register", Auth)
                 object Login : PathNode("login", Auth)
+                object Logout : PathNode("logout", Auth)
                 object Sessions : ParamPathNode("sessions", Auth) {
                     val ById = param("id")
                 }

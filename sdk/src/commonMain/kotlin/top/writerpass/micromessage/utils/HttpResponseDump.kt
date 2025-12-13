@@ -1,4 +1,4 @@
-package top.writerpass.micromessage.common.utils
+package top.writerpass.micromessage.utils
 
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsChannel

@@ -4,8 +4,8 @@ import io.github.classgraph.ClassGraph
 import io.github.classgraph.ScanResult
 import org.jetbrains.exposed.sql.Table
 import org.slf4j.LoggerFactory
-import top.writerpass.micromessage.common.utils.WithLogger
-import top.writerpass.micromessage.common.utils.logWrapper
+import top.writerpass.micromessage.utils.WithLogger
+import top.writerpass.micromessage.utils.logWrapper
 import top.writerpass.micromessage.core.data.base.BaseRouting
 
 class ClassScanner: WithLogger {

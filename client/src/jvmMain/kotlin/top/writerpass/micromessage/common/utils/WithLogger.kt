@@ -1,6 +1,7 @@
 package top.writerpass.micromessage.common.utils
 
 import org.slf4j.Logger
+import top.writerpass.micromessage.utils.WithLogger
 
 interface WithLogger {
     val logger: Logger
