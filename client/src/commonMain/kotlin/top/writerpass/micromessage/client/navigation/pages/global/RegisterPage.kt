@@ -29,6 +29,7 @@ import top.writerpass.cmplibrary.compose.ables.MutableStateComposeExt.CxOutlined
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxText
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxTextButton
 import top.writerpass.cmplibrary.utils.Mutable
+import top.writerpass.micromessage.client.LocalMicroMessageSdkViewModel
 import top.writerpass.micromessage.client.LocalNavController
 import top.writerpass.micromessage.client.navigation.pages.base.IPage
 
@@ -44,11 +45,12 @@ object RegisterPage : IPage {
     override val content: @Composable (AnimatedContentScope.(NavBackStackEntry) -> Unit)
         get() = {
             FullSizeBox {
+                val microMessageSdkViewModel = LocalMicroMessageSdkViewModel.current
+                val navController = LocalNavController.current
                 Column(
                     modifier = Modifier.align(Alignment.Center),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    val navController = LocalNavController.current
                     val username = Mutable.someString("wolf")
                     val password = Mutable.someString("asdfghjkl")
                     val password1 = Mutable.someString("asdfghjkl")
@@ -110,9 +112,12 @@ object RegisterPage : IPage {
                     "Register".CxTextButton(
                         enabled = passwordSame
                     ) {
-//                        httpClient
-                        // send register request
-//                        navController.login()
+                        microMessageSdkViewModel.register(
+                            username = username.value,
+                            password = password.value
+                        ) {
+                            navController.popBackStack()
+                        }
                     }
                 }
             }

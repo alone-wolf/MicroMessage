@@ -13,16 +13,21 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import top.writerpass.micromessage.client.navigation.pages.Pages
+import top.writerpass.micromessage.client.navigation.pages.base.IPage
 import top.writerpass.micromessage.client.navigation.pages.global.LoginPage
+import top.writerpass.micromessage.client.navigation.pages.main.MessagePage
 
 val LocalNavController = staticCompositionLocalOf<NavControllerWrapper> {
     error("No NavHostController provided")
 }
 
-val LocalCurrentPage =
-    staticCompositionLocalOf<top.writerpass.micromessage.client.navigation.pages.base.IPage> {
-        error("No Page Provided")
-    }
+val LocalCurrentPage = staticCompositionLocalOf<IPage> {
+    error("No Page Provided")
+}
+
+val LocalMicroMessageSdkViewModel = staticCompositionLocalOf<MicroMessageSdkViewModel> {
+    error("No MicroMessageSdkViewModel")
+}
 
 @Composable
 fun rememberViewModelStoreOwner(): ViewModelStoreOwner {
@@ -43,7 +48,7 @@ class NavControllerWrapper(
 ) {
     val c = navHostController
     fun open(
-        page: top.writerpass.micromessage.client.navigation.pages.base.IPage,
+        page: IPage,
         vararg args: Any
     ) {
         val newRoute = StringBuilder(page.routeBase).apply {
@@ -52,12 +57,11 @@ class NavControllerWrapper(
                 append(it)
             }
         }.toString()
-        println("going to open:${newRoute}")
         navHostController.navigate(newRoute)
     }
 
     fun login() {
-        navHostController.navigate(_root_ide_package_.top.writerpass.micromessage.client.navigation.pages.main.MessagePage.routeBase) {
+        navHostController.navigate(MessagePage.routeBase) {
             navHostController.popBackStack()
         }
     }
@@ -69,7 +73,7 @@ class NavControllerWrapper(
     }
 
     @Composable
-    fun currentPageAsState(): State<top.writerpass.micromessage.client.navigation.pages.base.IPage> {
+    fun currentPageAsState(): State<IPage> {
         val navBackStackEntry by c.currentBackStackEntryFlow.collectAsState(null)
         return remember {
             derivedStateOf {

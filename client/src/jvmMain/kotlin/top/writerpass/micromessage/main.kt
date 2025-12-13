@@ -8,17 +8,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.application
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import top.writerpass.micromessage.client.ApplicationState
 import top.writerpass.micromessage.client.LocalCurrentPage
+import top.writerpass.micromessage.client.LocalMicroMessageSdkViewModel
 import top.writerpass.micromessage.client.LocalNavController
 import top.writerpass.micromessage.client.LocalSnackbarHostState
+import top.writerpass.micromessage.client.MicroMessageSdkViewModel
 import top.writerpass.micromessage.client.rememberNavControllerWrapper
 import top.writerpass.micromessage.client.rememberViewModelStoreOwner
 import top.writerpass.micromessage.client.windows.AppMainWindow
-import top.writerpass.micromessage.sdk.ApiClient
 
 /**
  * 1. 登录/注册/重置密码 vv
@@ -46,10 +48,6 @@ import top.writerpass.micromessage.sdk.ApiClient
  * 16. 高级管理（支付、钱包等）
  */
 
-val apiClient = ApiClient(
-    baseUrl = "http://127.0.0.1:8080"
-)
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @DelicateCoroutinesApi
@@ -67,6 +65,9 @@ fun main() {
         val navController = rememberNavControllerWrapper()
         val viewModelStoreOwner = rememberViewModelStoreOwner()
         val currentPage by navController.currentPageAsState()
+        val microMessageSdkViewModel = viewModel(
+            viewModelStoreOwner = viewModelStoreOwner
+        ) { MicroMessageSdkViewModel() }
 
         CompositionLocalProvider(
             values = arrayOf(
@@ -74,6 +75,7 @@ fun main() {
                 LocalViewModelStoreOwner provides viewModelStoreOwner,
                 LocalSnackbarHostState provides snackbarHostState,
                 LocalCurrentPage provides currentPage,
+                LocalMicroMessageSdkViewModel provides microMessageSdkViewModel
             ),
             content = {
                 AppMainWindow()

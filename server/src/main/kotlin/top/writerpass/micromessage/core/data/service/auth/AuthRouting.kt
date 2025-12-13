@@ -109,6 +109,20 @@ object AuthRouting : BaseRouting {
                 }
             }
 
+            AuthNodes.NormalAccess.run {
+                routeWrapper {
+                    delete("/logout") {
+                        call.principal<UserInfoPrincipal>()?.let { principal ->
+                            val sessionId = principal.session.id
+                            newSuspendedTransaction {
+                                LoginSessionEntity.findById(sessionId)?.delete()
+                            }
+                            call.returnOk("")
+                        }
+                    }
+                }
+            }
+
             // /api/v1/auth/refresh
             AuthNodes.RefreshToken.run {
                 routeWrapper {

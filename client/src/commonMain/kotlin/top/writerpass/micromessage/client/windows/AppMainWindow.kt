@@ -102,9 +102,7 @@ fun AppMainWindow() {
                                 if (page.showOnBottomBar) {
                                     val routeBase = page.routeBase
                                     val isSelected by remember(currentPage) {
-                                        derivedStateOf {
-                                            currentPage.routeBase == routeBase
-                                        }
+                                        derivedStateOf { currentPage.routeBase == routeBase }
                                     }
                                     NavigationBarItem(
                                         selected = isSelected,

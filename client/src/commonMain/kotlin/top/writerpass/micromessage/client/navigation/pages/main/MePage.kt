@@ -33,6 +33,7 @@ import top.writerpass.cmplibrary.compose.FullWidthRow
 import top.writerpass.cmplibrary.compose.ables.IconComposeExt.CxIcon
 import top.writerpass.cmplibrary.compose.ables.IconComposeExt.CxIconButton
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxText
+import top.writerpass.micromessage.client.LocalMicroMessageSdkViewModel
 import top.writerpass.micromessage.client.LocalNavController
 import top.writerpass.micromessage.client.navigation.pages.base.IMainPage
 import top.writerpass.micromessage.client.navigation.pages.global.MyQrCodePage
@@ -62,6 +63,7 @@ object MePage : IMainPage {
     override val content: @Composable (AnimatedContentScope.(NavBackStackEntry) -> Unit)
         get() = {
             val navController = LocalNavController.current
+            val microMessageSdkViewModel = LocalMicroMessageSdkViewModel.current
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 item {
                     FullWidthRow(
@@ -116,7 +118,9 @@ object MePage : IMainPage {
                     "Logout",
                     Icons.AutoMirrored.Filled.Logout
                 ) {
-                    navController.logout()
+                    microMessageSdkViewModel.logout() {
+                        navController.logout()
+                    }
                 }
             }
         }

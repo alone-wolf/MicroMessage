@@ -20,6 +20,8 @@ import top.writerpass.cmplibrary.compose.ables.MutableStateComposeExt.CxOutlined
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxText
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxTextButton
 import top.writerpass.cmplibrary.utils.Mutable
+import top.writerpass.micromessage.LoginCredentialStore
+import top.writerpass.micromessage.client.LocalMicroMessageSdkViewModel
 import top.writerpass.micromessage.client.LocalNavController
 import top.writerpass.micromessage.client.navigation.pages.base.IPage
 
@@ -36,7 +38,7 @@ object LoginPage : IPage {
         get() = {
             FullSizeBox {
                 val navController = LocalNavController.current
-
+                val microMessageSdkViewModel = LocalMicroMessageSdkViewModel.current
                 Column(
                     modifier = Modifier.align(Alignment.Center),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -56,7 +58,11 @@ object LoginPage : IPage {
                         visualTransformation = remember { PasswordVisualTransformation() }
                     )
                     "Login".CxTextButton {
-                        navController.login()
+                        LoginCredentialStore.username = username.value
+                        LoginCredentialStore.passwordHash0 = password.value
+                        microMessageSdkViewModel.login {
+                            navController.login()
+                        }
                     }
                 }
                 Row(modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 20.dp)) {
