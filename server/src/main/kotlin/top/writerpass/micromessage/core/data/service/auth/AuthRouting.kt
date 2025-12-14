@@ -7,7 +7,6 @@ import io.ktor.server.auth.principal
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import top.writerpass.kmplibrary.utils.println
@@ -20,8 +19,10 @@ import top.writerpass.micromessage.core.data.service.auth.data.Credential
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionEntity
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionTable
 import top.writerpass.micromessage.core.data.service.auth.principal.UserInfoPrincipal
+import top.writerpass.micromessage.core.data.service.auth.request.LoginRequest
 import top.writerpass.micromessage.core.data.service.auth.request.ResetPasswordRequest
 import top.writerpass.micromessage.core.data.service.auth.request.SessionsResponse
+import top.writerpass.micromessage.core.data.service.auth.response.LoginResponse
 import top.writerpass.micromessage.core.data.service.user.entity.UserEntity
 import top.writerpass.micromessage.core.data.service.user.entity.UserIdentifierEntity
 import top.writerpass.micromessage.core.data.service.user.table.UserIdentifierTable
@@ -32,13 +33,6 @@ import top.writerpass.micromessage.server.returnUnauthorized
 import top.writerpass.micromessage.utils.PasswordUtil
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-
-@Serializable
-data class LoginResponse(
-    val token: String,
-    val refreshToken: String,
-    val sessionId: Long, // sessionId
-)
 
 object AuthRouting : BaseRouting {
 

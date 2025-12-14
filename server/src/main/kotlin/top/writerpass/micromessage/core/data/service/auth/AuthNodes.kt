@@ -7,6 +7,7 @@ import io.ktor.server.auth.UserIdPrincipal
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.basic
 import io.ktor.server.auth.bearer
+import io.ktor.server.request.receive
 import io.ktor.server.routing.Route
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
@@ -21,6 +22,7 @@ import top.writerpass.micromessage.core.data.service.auth.data.Credential
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionEntity
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionTable
 import top.writerpass.micromessage.core.data.service.auth.principal.UserInfoPrincipal
+import top.writerpass.micromessage.core.data.service.auth.request.LoginRequest
 import top.writerpass.micromessage.core.data.service.user.entity.UserIdentifierEntity
 import top.writerpass.micromessage.core.data.service.user.table.UserIdentifierTable
 import kotlin.time.Clock
@@ -48,6 +50,8 @@ object AuthNodes {
             basic(name) {
                 realm = realmInfo
                 validate { credentials ->
+
+                    val loginRequest = receive<LoginRequest>()
 
                     val username = credentials.name
                     val passwordHash0 = credentials.password

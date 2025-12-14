@@ -43,7 +43,7 @@ fun main() {
         config = ServerConfig.default,
         extraModules = {
             install(Authentication) {
-                AuthNodes.Password.run { install() }
+                AuthNodes.Password.run { install() } 
                 AuthNodes.RefreshToken.run { install() }
                 AuthNodes.NormalAccess.run { install() }
             }

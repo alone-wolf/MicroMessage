@@ -14,6 +14,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.utils.io.cancel
+import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.idParam
 import org.koin.core.component.getScopeId
 import org.slf4j.Logger
@@ -38,9 +39,17 @@ class AuthService(private val client: HttpClient) : WithLogger {
         return r.status == HttpStatusCode.OK
     }
 
+
+    @Serializable
+    data class LoginRequest(
+        val deviceName: String = "WPT14A",
+        val deviceId: String = "00-00-00-00"
+    )
+
     suspend fun login(username: String, password: String): Boolean {
         val r = client.post(ServerRoutes.Api.V1.Auth.Login.path) {
             basicAuth(username, password)
+            setBody(LoginRequest())
         }
 
         val rr = r.body<ReturnBody<LoginResponse>>()

@@ -1,12 +1,4 @@
 package top.writerpass.micromessage.utils
 
-expect fun getDeviceName()
+expect fun getDeviceName(): String
 
-
-object DeviceNameUtils {
-
-
-    fun generateDeviceId(){
-
-    }
-}

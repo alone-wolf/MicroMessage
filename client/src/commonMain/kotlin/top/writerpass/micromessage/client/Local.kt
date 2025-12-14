@@ -16,9 +16,11 @@ import top.writerpass.micromessage.client.navigation.pages.Pages
 import top.writerpass.micromessage.client.navigation.pages.base.IPage
 import top.writerpass.micromessage.client.navigation.pages.global.LoginPage
 import top.writerpass.micromessage.client.navigation.pages.main.MessagePage
+import top.writerpass.micromessage.client.viewmodels.ApplicationViewModel
+import top.writerpass.micromessage.client.viewmodels.MicroMessageSdkViewModel
 
 val LocalNavController = staticCompositionLocalOf<NavControllerWrapper> {
-    error("No NavHostController provided")
+    error("No NavHostController Provided")
 }
 
 val LocalCurrentPage = staticCompositionLocalOf<IPage> {
@@ -26,7 +28,11 @@ val LocalCurrentPage = staticCompositionLocalOf<IPage> {
 }
 
 val LocalMicroMessageSdkViewModel = staticCompositionLocalOf<MicroMessageSdkViewModel> {
-    error("No MicroMessageSdkViewModel")
+    error("No MicroMessageSdkViewModel Provided")
+}
+
+val LocalApplicationViewModel = staticCompositionLocalOf<ApplicationViewModel> {
+    error("No ApplicationViewModel Provided")
 }
 
 @Composable

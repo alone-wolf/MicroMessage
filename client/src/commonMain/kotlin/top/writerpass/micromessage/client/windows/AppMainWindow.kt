@@ -21,7 +21,7 @@ import androidx.compose.ui.window.rememberWindowState
 import androidx.window.core.layout.WindowSizeClass
 import top.writerpass.cmplibrary.compose.ables.IconComposeExt.CxIcon
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxText
-import top.writerpass.micromessage.client.ApplicationState
+import top.writerpass.micromessage.client.LocalApplicationViewModel
 import top.writerpass.micromessage.client.LocalCurrentPage
 import top.writerpass.micromessage.client.LocalNavController
 import top.writerpass.micromessage.client.LocalSnackbarHostState
@@ -49,18 +49,19 @@ object AdaptiveWindow {
 fun AppMainWindow() {
     val currentPage = LocalCurrentPage.current
     val snackbarHostState = LocalSnackbarHostState.current
+    val applicationViewModel = LocalApplicationViewModel.current
     Window(
         state = rememberWindowState(
             width = 400.dp,
             height = 800.dp
         ),
-        onCloseRequest = { ApplicationState.showMainWindow = false },
-        visible = ApplicationState.showMainWindow,
+        onCloseRequest = { applicationViewModel.showMainWindow = false },
+        visible = applicationViewModel.showMainWindow,
         title = "MicroMessage",
         resizable = true,
         enabled = true,
         focusable = true,
-        alwaysOnTop = ApplicationState.pinMainWindowOnTop,
+        alwaysOnTop = applicationViewModel.pinMainWindowOnTop,
         content = {
             val wai = currentWindowAdaptiveInfo(supportLargeAndXLargeWidth = true)
             val wsc = wai.windowSizeClass

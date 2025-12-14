@@ -1,4 +1,4 @@
-package top.writerpass.micromessage.client
+package top.writerpass.micromessage.client.viewmodels
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -6,6 +6,8 @@ import androidx.compose.runtime.setValue
 import top.writerpass.kmplibrary.coroutine.withContextMain
 import top.writerpass.kmplibrary.utils.println
 import top.writerpass.micromessage.AuthStore
+import top.writerpass.micromessage.client.viewmodels.BaseViewModel
+import top.writerpass.micromessage.client.Singleton
 import top.writerpass.micromessage.response.SessionsResponse
 
 class MicroMessageSdkViewModel : BaseViewModel() {

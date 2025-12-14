@@ -33,7 +33,7 @@ import top.writerpass.cmplibrary.compose.FullWidthRow
 import top.writerpass.cmplibrary.compose.ables.IconComposeExt.CxIcon
 import top.writerpass.cmplibrary.compose.ables.IconComposeExt.CxIconButton
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxText
-import top.writerpass.micromessage.client.ApplicationState
+import top.writerpass.micromessage.client.LocalApplicationViewModel
 import top.writerpass.micromessage.client.LocalNavController
 import top.writerpass.micromessage.client.navigation.pages.base.IMainPage
 import top.writerpass.micromessage.client.navigation.pages.global.PrivateChatPage
@@ -53,13 +53,14 @@ object MessagePage : IMainPage {
         get() = {}
     override val actions: @Composable (RowScope.() -> Unit)
         get() = {
-            if (ApplicationState.pinMainWindowOnTop) {
+            val applicationViewModel = LocalApplicationViewModel.current
+            if (applicationViewModel.pinMainWindowOnTop) {
                 Icons.Filled.PushPin.CxIconButton {
-                    ApplicationState.pinMainWindowOnTop = false
+                    applicationViewModel.pinMainWindowOnTop = false
                 }
             } else {
                 Icons.Outlined.PushPin.CxIconButton {
-                    ApplicationState.pinMainWindowOnTop = true
+                    applicationViewModel.pinMainWindowOnTop = true
                 }
             }
             Icons.Default.AddCircleOutline.CxIconButton {}

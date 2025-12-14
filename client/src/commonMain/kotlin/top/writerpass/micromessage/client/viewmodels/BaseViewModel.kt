@@ -1,4 +1,4 @@
-package top.writerpass.micromessage.client
+package top.writerpass.micromessage.client.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

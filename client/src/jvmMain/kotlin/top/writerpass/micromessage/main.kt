@@ -12,12 +12,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import top.writerpass.micromessage.client.ApplicationState
+import top.writerpass.micromessage.client.viewmodels.ApplicationViewModel
+import top.writerpass.micromessage.client.LocalApplicationViewModel
 import top.writerpass.micromessage.client.LocalCurrentPage
 import top.writerpass.micromessage.client.LocalMicroMessageSdkViewModel
 import top.writerpass.micromessage.client.LocalNavController
 import top.writerpass.micromessage.client.LocalSnackbarHostState
-import top.writerpass.micromessage.client.MicroMessageSdkViewModel
+import top.writerpass.micromessage.client.viewmodels.MicroMessageSdkViewModel
 import top.writerpass.micromessage.client.rememberNavControllerWrapper
 import top.writerpass.micromessage.client.rememberViewModelStoreOwner
 import top.writerpass.micromessage.client.windows.AppMainWindow
@@ -55,12 +56,6 @@ fun main() {
     GlobalScope.launch { applicationServer() }
 
     application {
-        LaunchedEffect(ApplicationState.showMainWindow) {
-            if (ApplicationState.showMainWindow.not()) {
-                ::exitApplication.invoke()
-            }
-        }
-
         val snackbarHostState = remember { SnackbarHostState() }
         val navController = rememberNavControllerWrapper()
         val viewModelStoreOwner = rememberViewModelStoreOwner()
@@ -68,6 +63,17 @@ fun main() {
         val microMessageSdkViewModel = viewModel(
             viewModelStoreOwner = viewModelStoreOwner
         ) { MicroMessageSdkViewModel() }
+        val applicationViewModel = viewModel(
+            viewModelStoreOwner = viewModelStoreOwner
+        ) {
+            ApplicationViewModel()
+        }
+
+        LaunchedEffect(applicationViewModel.showMainWindow) {
+            if (applicationViewModel.showMainWindow.not()) {
+                ::exitApplication.invoke()
+            }
+        }
 
         CompositionLocalProvider(
             values = arrayOf(
@@ -75,6 +81,7 @@ fun main() {
                 LocalViewModelStoreOwner provides viewModelStoreOwner,
                 LocalSnackbarHostState provides snackbarHostState,
                 LocalCurrentPage provides currentPage,
+                LocalApplicationViewModel provides applicationViewModel,
                 LocalMicroMessageSdkViewModel provides microMessageSdkViewModel
             ),
             content = {

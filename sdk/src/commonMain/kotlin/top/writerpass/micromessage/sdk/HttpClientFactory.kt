@@ -23,15 +23,7 @@ object HttpClientFactory {
     ): HttpClient {
         return HttpClient(ktorClientEngine()) {
             install(ContentNegotiation) {
-                json(Json {
-                    prettyPrint = true
-                    ignoreUnknownKeys = true
-                    isLenient = true
-                    encodeDefaults = true
-                    explicitNulls = false
-                    allowSpecialFloatingPointValues = true
-                    allowStructuredMapKeys = true
-                })
+                json(compactJson)
             }
 
             install(HttpTimeout) {
