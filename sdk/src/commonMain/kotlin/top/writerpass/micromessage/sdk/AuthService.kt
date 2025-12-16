@@ -8,62 +8,93 @@ import io.ktor.client.request.basicAuth
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.post
-import io.ktor.client.request.setBody
+import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsChannel
-import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
-import io.ktor.http.contentType
 import io.ktor.utils.io.cancel
-import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.sql.idParam
-import org.koin.core.component.getScopeId
 import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import top.writerpass.micromessage.AuthStore
 import top.writerpass.micromessage.ReturnBody
 import top.writerpass.micromessage.ServerRoutes
-import top.writerpass.micromessage.request.RegisterRequest
-import top.writerpass.micromessage.response.LoginResponse
-import top.writerpass.micromessage.response.SessionsResponse
+import top.writerpass.micromessage.auth.request.DeviceHardware
+import top.writerpass.micromessage.auth.request.DeviceNetwork
+import top.writerpass.micromessage.auth.request.DeviceOS
+import top.writerpass.micromessage.auth.request.DevicePlatform
+import top.writerpass.micromessage.auth.request.DeviceRuntime
+import top.writerpass.micromessage.auth.request.DeviceSecurity
+import top.writerpass.micromessage.auth.request.DeviceType
+import top.writerpass.micromessage.auth.request.IpVersion
+import top.writerpass.micromessage.auth.request.LoginDevice
+import top.writerpass.micromessage.auth.request.LoginRequest
+import top.writerpass.micromessage.auth.request.RegisterRequest
+import top.writerpass.micromessage.auth.response.LoginResponse
+import top.writerpass.micromessage.auth.response.SessionsResponse
+import top.writerpass.micromessage.utils.logger
 import top.writerpass.micromessage.utils.WithLogger
+import top.writerpass.micromessage.utils.generateDeviceSerial
+import top.writerpass.micromessage.utils.getDeviceName
+import top.writerpass.micromessage.utils.responseOk
+import top.writerpass.micromessage.utils.responseUnauthorized
+import top.writerpass.micromessage.utils.setJsonBody
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
 class AuthService(private val client: HttpClient) : WithLogger {
     suspend fun register(username: String, password: String): Boolean {
         val passwordHash0 = password
-        val reqBody = RegisterRequest(username, passwordHash0)
         val r = client.post(ServerRoutes.Api.V1.Auth.Register.path) {
-            contentType(ContentType.Application.Json)
-            setBody(reqBody)
+            RegisterRequest(username, passwordHash0).let(::setJsonBody)
         }
-        return r.status == HttpStatusCode.OK
+        return r.responseOk()
     }
-
-
-    @Serializable
-    data class LoginRequest(
-        val deviceName: String = "WPT14A",
-        val deviceId: String = "00-00-00-00"
-    )
 
     suspend fun login(username: String, password: String): Boolean {
         val r = client.post(ServerRoutes.Api.V1.Auth.Login.path) {
             basicAuth(username, password)
-            setBody(LoginRequest())
+            LoginRequest(
+                device = LoginDevice(
+                    hostname = getDeviceName(),
+                    serial = generateDeviceSerial(),
+                    type = DeviceType.Desktop,
+                    os = DeviceOS(
+                        platform = DevicePlatform.Windows,
+                        version = "11 25H2",
+                        kernel = "NT10.0",
+                        arch = "X86_64"
+                    ),
+                    hardware = DeviceHardware(
+                        cpu = "M4",
+                        cores = "15",
+                        memMB = "111111",
+                        gpus = listOf("asdasdasd")
+                    ),
+                    network = listOf(
+                        DeviceNetwork(
+                            "127.0.0.1",
+                            mask = "255.255.255.0",
+                            gateway = "",
+                            version = IpVersion.IPv4,
+                        )
+                    ),
+                    security = DeviceSecurity(
+                        fingerprint = "aaaa",
+                        publicKey = "bbbbb",
+                        trusted = true
+                    ),
+                    runtime = DeviceRuntime(
+                        version = "0.0.1"
+                    )
+                )
+            ).let(::setJsonBody)
         }
-
         val rr = r.body<ReturnBody<LoginResponse>>()
-        rr.data?.let { session ->
-            AuthStore.updateToken(session)
-        }
-
-        return r.status == HttpStatusCode.OK && rr.data?.token != null
+        rr.data?.let(AuthStore::updateToken)
+        return r.responseOk() && rr.data?.token != null
     }
 
     suspend fun logout(): Boolean {
         val r = client.delete(ServerRoutes.Api.V1.Auth.Logout.path)
         r.bodyAsChannel().cancel()
-        return r.status == HttpStatusCode.OK || r.status == HttpStatusCode.Unauthorized
+        return r.responseOk() || r.responseUnauthorized()
     }
 
     suspend fun sessions(): List<SessionsResponse> {
@@ -73,10 +104,12 @@ class AuthService(private val client: HttpClient) : WithLogger {
 
     suspend fun logoutSession(sessionId: Long): Boolean {
         val r = client.delete(
-            ServerRoutes.Api.V1.Auth.Sessions.ById(sessionId.toString())
+            ServerRoutes.Api.V1.Auth.Sessions
+                .ById(sessionId.toString())
         )
-        return r.status == HttpStatusCode.OK
+        return r.responseOk()
     }
 
-    override val logger: Logger = LoggerFactory.getLogger(this::class.java)
+    override val logger: Logger = logger("AuthService")
 }
+

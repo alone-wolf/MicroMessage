@@ -6,6 +6,7 @@ import io.ktor.server.application.ApplicationCallPipeline
 import io.ktor.server.application.BaseApplicationPlugin
 import io.ktor.server.response.ApplicationSendPipeline
 import io.ktor.util.AttributeKey
+import top.writerpass.micromessage.ReturnBody
 
 object ReturnBodyPlugin : BaseApplicationPlugin<ApplicationCallPipeline, Unit, Unit> {
 

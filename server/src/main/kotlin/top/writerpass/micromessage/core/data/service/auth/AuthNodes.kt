@@ -11,18 +11,14 @@ import io.ktor.server.request.receive
 import io.ktor.server.routing.Route
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import top.writerpass.kmplibrary.utils.println
+import top.writerpass.micromessage.auth.request.LoginRequest
 import top.writerpass.micromessage.utils.PasswordUtil
 import top.writerpass.micromessage.utils.SessionTokenGenerator
-import top.writerpass.micromessage.core.data.enums.CredentialType
-import top.writerpass.micromessage.core.data.enums.IdentifierType
 import top.writerpass.micromessage.core.data.service.auth.data.Credential
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionEntity
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionTable
 import top.writerpass.micromessage.core.data.service.auth.principal.UserInfoPrincipal
-import top.writerpass.micromessage.core.data.service.auth.request.LoginRequest
 import top.writerpass.micromessage.core.data.service.user.entity.UserIdentifierEntity
 import top.writerpass.micromessage.core.data.service.user.table.UserIdentifierTable
 import kotlin.time.Clock
@@ -61,7 +57,7 @@ object AuthNodes {
                         // 1. 查 identifier
                         val identifier = UserIdentifierEntity.find {
 //                            (UserIdentifierTable.type eq IdentifierType.Username) and
-                                    (UserIdentifierTable.content eq username)
+                            (UserIdentifierTable.content eq username)
                         }.singleOrNull() ?: return@newSuspendedTransaction null
 
                         // 2. 查 password credential
@@ -74,6 +70,9 @@ object AuthNodes {
                         // 3. 校验密码
                         val calcHash = PasswordUtil.hash(passwordHash0, cred.salt)
                         if (calcHash != cred.passwordHash) return@newSuspendedTransaction null
+
+                        // 4. 查设备编号
+
 
                         // 4. 创建登陆 Session
                         val loginSession = LoginSessionEntity.new {
@@ -92,8 +91,6 @@ object AuthNodes {
                 }
             }
         }
-
-//        override val logger: Logger = LoggerFactory.getLogger(this::class.simpleName)
     }
 
     object RefreshToken : AuthNode {
@@ -113,8 +110,6 @@ object AuthNodes {
                 }
             }
         }
-
-//        override val logger: Logger = LoggerFactory.getLogger(this::class.simpleName)
     }
 
     object NormalAccess : AuthNode {
@@ -144,7 +139,5 @@ object AuthNodes {
                 }
             }
         }
-
-//        override val logger: Logger = LoggerFactory.getLogger(this::class.simpleName)
     }
 }

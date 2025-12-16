@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalTime::class)
 
-package top.writerpass.micromessage.server
+package top.writerpass.micromessage
 
 
 import io.ktor.http.HttpStatusCode

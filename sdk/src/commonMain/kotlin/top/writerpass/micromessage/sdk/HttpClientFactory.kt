@@ -7,8 +7,11 @@ import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.header
+import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.contentType
 import io.ktor.http.encodedPath
+import io.ktor.http.userAgent
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import top.writerpass.kmplibrary.utils.println
@@ -31,10 +34,12 @@ object HttpClientFactory {
                 connectTimeoutMillis = 5000
             }
 
-            install(DefaultRequest.Plugin) {
+            install(DefaultRequest) {
                 url(baseUrl)
 //                header(HttpHeaders.Accept, "*/*")
-                header(HttpHeaders.UserAgent, "MicroMessageSdk/0.0.1")
+                userAgent("MicroMessageSdk/0.0.1")
+//                header(HttpHeaders.UserAgent, "MicroMessageSdk/0.0.1")
+//                contentType(ContentType.Application.Json)
 
                 when (url.encodedPath) {
 //                    "/api/v1/auth/login" -> {

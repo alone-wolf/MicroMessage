@@ -1,6 +1,6 @@
 package top.writerpass.micromessage
 
-import top.writerpass.micromessage.response.LoginResponse
+import top.writerpass.micromessage.auth.response.LoginResponse
 import java.util.concurrent.atomic.AtomicReference
 
 object AuthStore {

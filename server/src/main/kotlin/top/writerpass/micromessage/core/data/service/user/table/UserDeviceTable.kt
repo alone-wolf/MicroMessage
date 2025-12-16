@@ -12,6 +12,11 @@ object UserDeviceTable : LongIdTable() {
         refColumn = UserTable.id
     )
 
+    val serial = varchar(
+        name = "serial",
+        length = 100
+    )
+
     val deviceType = enumeration<DeviceType>("device_type")
     val model = varchar(
         name = "model",

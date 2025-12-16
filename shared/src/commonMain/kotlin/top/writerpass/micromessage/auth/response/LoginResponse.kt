@@ -1,4 +1,4 @@
-package top.writerpass.micromessage.response
+package top.writerpass.micromessage.auth.response
 
 import kotlinx.serialization.Serializable
 

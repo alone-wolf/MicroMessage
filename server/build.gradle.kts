@@ -8,20 +8,13 @@ group = "top.writerpass.micromessage"
 version = "1.0.0"
 
 
-dependencies{
+dependencies {
+    implementation(project(":shared"))
     implementation(libs.kotlinx.datetime)
 
-    implementation("top.writerpass.libs:KMPLibrary:1.0.0") {
-        exclude(group = "org.slf4j")
-        exclude(group = "ch.qos.logback")
-    }
-    implementation("top.writerpass.libs:CMPLibrary:1.0.0") {
-        exclude(group = "org.slf4j")
-        exclude(group = "ch.qos.logback")
-    }
-    implementation("io.github.classgraph:classgraph:4.8.184"){
-        exclude(group = "org.slf4j")
-    }
+    implementation("top.writerpass.libs:KMPLibrary:1.0.0")
+    implementation("top.writerpass.libs:CMPLibrary:1.0.0")
+    implementation("io.github.classgraph:classgraph:4.8.184")
     implementation(ktorLibs.serialization.kotlinx.json)
     implementation(ktorLibs.server.core)
     implementation(ktorLibs.server.websockets)

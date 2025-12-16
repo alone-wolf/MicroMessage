@@ -16,12 +16,17 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.Devices
 import androidx.compose.material.icons.filled.OnlinePrediction
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.QrCode2
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,16 +35,19 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavBackStackEntry
+import top.writerpass.cmplibrary.LaunchedEffectOdd
 import top.writerpass.cmplibrary.compose.FullWidthRow
 import top.writerpass.cmplibrary.compose.ables.IconComposeExt.CxIcon
 import top.writerpass.cmplibrary.compose.ables.IconComposeExt.CxIconButton
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxText
+import top.writerpass.kmplibrary.coroutine.withContextDefault
 import top.writerpass.micromessage.client.LocalMicroMessageSdkViewModel
 import top.writerpass.micromessage.client.LocalNavController
 import top.writerpass.micromessage.client.navigation.pages.base.IMainPage
 import top.writerpass.micromessage.client.navigation.pages.global.MyQrCodePage
 import top.writerpass.micromessage.client.navigation.pages.global.SessionsPage
 import top.writerpass.micromessage.client.navigation.pages.global.SettingsPage
+import top.writerpass.micromessage.utils.getDeviceName
 
 
 object MePage : IMainPage {
@@ -66,6 +74,14 @@ object MePage : IMainPage {
         get() = {
             val navController = LocalNavController.current
             val microMessageSdkViewModel = LocalMicroMessageSdkViewModel.current
+            var deviceName by remember {
+                mutableStateOf("--")
+            }
+            LaunchedEffectOdd {
+                deviceName = withContextDefault {
+                    getDeviceName()
+                }
+            }
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 item {
                     FullWidthRow(
@@ -120,8 +136,15 @@ object MePage : IMainPage {
                 aa(
                     "Sessions",
                     Icons.Default.OnlinePrediction
-                ){
+                ) {
                     navController.open(SessionsPage)
+                }
+
+                aa(
+                    "Device: $deviceName",
+                    Icons.Default.Devices
+                ) {
+//                    navController.open(SessionsPage)
                 }
                 aa(
                     "Logout",

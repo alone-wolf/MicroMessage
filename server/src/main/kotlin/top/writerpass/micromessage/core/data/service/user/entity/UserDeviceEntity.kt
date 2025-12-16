@@ -6,8 +6,10 @@ import org.jetbrains.exposed.dao.id.EntityID
 import top.writerpass.micromessage.core.data.service.user.data.UserDevice
 import top.writerpass.micromessage.core.data.service.user.table.UserDeviceTable
 
-class UserDeviceEntity(id: EntityID<Long>) : LongEntity(id){
-    companion object: LongEntityClass<UserDeviceEntity>(UserDeviceTable)
+class UserDeviceEntity(id: EntityID<Long>) : LongEntity(id) {
+    companion object : LongEntityClass<UserDeviceEntity>(UserDeviceTable)
+
+    var serial by UserDeviceTable.serial
 
     var userId by UserDeviceTable.userId
     var deviceType by UserDeviceTable.deviceType
@@ -29,6 +31,7 @@ class UserDeviceEntity(id: EntityID<Long>) : LongEntity(id){
     fun toData(): UserDevice {
         return UserDevice(
             id = id.value,
+            serial = serial,
             userId = userId.value,
             deviceType = deviceType,
             model = model,

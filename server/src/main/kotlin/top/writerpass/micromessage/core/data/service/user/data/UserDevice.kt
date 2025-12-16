@@ -10,6 +10,7 @@ import top.writerpass.micromessage.core.data.enums.PushPlatform
 @Serializable  // TODO: 根据不同的DeviceType编写不同的creator
 data class UserDevice(
     override val id: Long, // PK
+    val serial: String,
 
     val userId: Long, // FK User.id
 

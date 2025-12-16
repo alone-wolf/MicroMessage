@@ -1,6 +1,7 @@
 package top.writerpass.micromessage.utils
 
 import java.net.InetAddress
+import java.util.UUID
 import kotlin.random.Random
 
 actual fun getDeviceName(): String {
@@ -15,4 +16,9 @@ private fun getHostName(): String {
             ?: System.getenv("COMPUTERNAME")
             ?: "unknown-host-${Random.nextInt()}"
     }
+}
+
+actual fun generateDeviceSerial(): String {
+//    return UUID.randomUUID().toString()
+    return "00-00-00-00-00-00-00-00"
 }
