@@ -1,7 +1,7 @@
 package top.writerpass.micromessage.core.data.service.user.table
 
 import org.jetbrains.exposed.dao.id.LongIdTable
-import top.writerpass.micromessage.core.data.enums.DeviceType
+import top.writerpass.micromessage.auth.request.DeviceType
 import top.writerpass.micromessage.core.data.enums.Language
 import top.writerpass.micromessage.core.data.enums.NetworkType
 import top.writerpass.micromessage.core.data.enums.PushPlatform

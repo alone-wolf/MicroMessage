@@ -74,5 +74,6 @@ enum class DevicePlatform {
     Unix,
     Android,
     IOS,
-    Web
+    Web,
+    Unknown
 }

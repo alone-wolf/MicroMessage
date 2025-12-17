@@ -14,20 +14,7 @@ open class PathNode(
 open class ParamPathNode(
     segment: String,
     parent: PathNode? = null
-) : PathNode(segment, parent) {
-
-    fun param(name: String) = DynamicPathNode("{$name}", this)
-}
-
-class DynamicPathNode(
-    private val segment: String,
-    parent: PathNode? = null
-) : PathNode(segment, parent) {
-
-    operator fun invoke(value: String): String {
-        return path.replace("{$segment}", value)
-    }
-}
+) : PathNode(segment, parent)
 
 object ServerRoutes {
 
@@ -40,9 +27,7 @@ object ServerRoutes {
                 object Register : PathNode("register", Auth)
                 object Login : PathNode("login", Auth)
                 object Logout : PathNode("logout", Auth)
-                object Sessions : ParamPathNode("sessions", Auth) {
-                    val ById = param("id")
-                }
+                object Sessions : ParamPathNode("sessions", Auth)
             }
 
             object User : PathNode("user", V1) {

@@ -21,8 +21,8 @@ data class HttpResponseDump(
 )
 
 suspend inline fun HttpResponse.dump(
-    maxBodyLength: Int = 4 * 1024,
     collectBody: Boolean = false,
+    maxBodyLength: Int = 4 * 1024,
     headerWhitelist: Set<String>? = null
 ): HttpResponseDump {
     val filteredRequestHeaders = request.headers.entries()

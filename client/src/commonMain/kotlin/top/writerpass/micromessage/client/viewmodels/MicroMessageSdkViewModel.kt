@@ -54,7 +54,13 @@ class MicroMessageSdkViewModel : BaseViewModel() {
 
     fun logoutSession(id: Long){
         runInViewModelIO {
-            Singleton.apiClient.auth.logoutSession(id)
+            if (Singleton.apiClient.auth.logoutSession(id)) {
+                Singleton.apiClient.auth.sessions().let {
+                    withContextMain {
+                        sessionList = it
+                    }
+                }
+            }
         }
     }
 }

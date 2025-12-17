@@ -1,7 +1,6 @@
 package top.writerpass.micromessage.utils
 
 import java.net.InetAddress
-import java.util.UUID
 import kotlin.random.Random
 
 actual fun getDeviceName(): String {

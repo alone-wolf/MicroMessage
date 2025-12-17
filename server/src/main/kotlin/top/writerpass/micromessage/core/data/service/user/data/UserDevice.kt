@@ -1,8 +1,8 @@
 package top.writerpass.micromessage.core.data.service.user.data
 
 import kotlinx.serialization.Serializable
+import top.writerpass.micromessage.auth.request.DeviceType
 import top.writerpass.micromessage.core.data.base.BaseDataClass
-import top.writerpass.micromessage.core.data.enums.DeviceType
 import top.writerpass.micromessage.core.data.enums.Language
 import top.writerpass.micromessage.core.data.enums.NetworkType
 import top.writerpass.micromessage.core.data.enums.PushPlatform

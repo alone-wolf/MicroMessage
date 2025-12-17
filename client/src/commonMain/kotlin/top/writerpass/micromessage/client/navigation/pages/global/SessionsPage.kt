@@ -63,8 +63,8 @@ object SessionsPage : IPage {
                 ) { session ->
                     SessionItem(
                         isThisDevice = thisSessionId == session.id,
-                        deviceName = session.id.toString(),
-                        loginType = session.id.toString(),
+                        deviceName = session.device.name,
+                        loginType = session.loginType.name,
                         expiresAt = Instant.fromEpochMilliseconds(session.expiresAt),
                         onLogout = {
                             microMessageSdkViewModel.logoutSession(session.id)

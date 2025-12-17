@@ -31,8 +31,10 @@ import top.writerpass.micromessage.auth.response.LoginResponse
 import top.writerpass.micromessage.auth.response.SessionsResponse
 import top.writerpass.micromessage.utils.logger
 import top.writerpass.micromessage.utils.WithLogger
+import top.writerpass.micromessage.utils.dump
 import top.writerpass.micromessage.utils.generateDeviceSerial
 import top.writerpass.micromessage.utils.getDeviceName
+import top.writerpass.micromessage.utils.print
 import top.writerpass.micromessage.utils.responseOk
 import top.writerpass.micromessage.utils.responseUnauthorized
 import top.writerpass.micromessage.utils.setJsonBody
@@ -104,9 +106,9 @@ class AuthService(private val client: HttpClient) : WithLogger {
 
     suspend fun logoutSession(sessionId: Long): Boolean {
         val r = client.delete(
-            ServerRoutes.Api.V1.Auth.Sessions
-                .ById(sessionId.toString())
+            "${ServerRoutes.Api.V1.Auth.Sessions.path}/${sessionId}"
         )
+        r.dump(true).print()
         return r.responseOk()
     }
 

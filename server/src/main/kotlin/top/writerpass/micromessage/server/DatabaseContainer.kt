@@ -5,6 +5,7 @@ import org.jetbrains.exposed.sql.Database
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import top.writerpass.micromessage.utils.WithLogger
+import top.writerpass.micromessage.utils.logger
 
 class DatabaseContainer: WithLogger{
     val database = Database.connect(
@@ -26,5 +27,5 @@ class DatabaseContainer: WithLogger{
         webServer.start()
     }
 
-    override val logger: Logger = LoggerFactory.getLogger("DatabaseContainer")
+    override val logger: Logger = logger("DatabaseContainer")
 }

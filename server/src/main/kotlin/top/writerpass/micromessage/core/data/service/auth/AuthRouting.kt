@@ -11,6 +11,7 @@ import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import top.writerpass.kmplibrary.utils.println
 import top.writerpass.micromessage.auth.request.RegisterRequest
+import top.writerpass.micromessage.auth.response.SessionDeviceInfo
 import top.writerpass.micromessage.core.data.service.auth.response.RegisterResponse
 import top.writerpass.micromessage.core.data.base.BaseRouting
 import top.writerpass.micromessage.core.data.enums.CredentialType
@@ -25,6 +26,7 @@ import top.writerpass.micromessage.core.data.service.user.entity.UserEntity
 import top.writerpass.micromessage.core.data.service.user.entity.UserIdentifierEntity
 import top.writerpass.micromessage.core.data.service.user.table.UserIdentifierTable
 import top.writerpass.micromessage.auth.response.SessionsResponse
+import top.writerpass.micromessage.core.data.service.device.data.DeviceEntity
 import top.writerpass.micromessage.returnBadRequest
 import top.writerpass.micromessage.returnConflict
 import top.writerpass.micromessage.returnOk
@@ -106,7 +108,7 @@ object AuthRouting : BaseRouting {
                                     sessionId = principal.session.id
                                 )
                             )
-                        } ?: call.returnUnauthorized("Unauthorized")
+                        } ?: call.returnUnauthorized("Login Unauthorized")
                     }
                 }
             }
@@ -119,7 +121,10 @@ object AuthRouting : BaseRouting {
                             newSuspendedTransaction {
                                 LoginSessionEntity.findById(sessionId)?.delete()
                             }
-                            call.returnOk("")
+                            call.returnOk(
+                                data = "",
+                                message = "Logout Successfully!"
+                            )
                         }
                     }
                 }
@@ -143,14 +148,26 @@ object AuthRouting : BaseRouting {
                         call.principal<UserInfoPrincipal>()?.let { principal ->
                             val userId = principal.userId
                             val sessions = newSuspendedTransaction {
+                                val l = mutableListOf<SessionsResponse>()
                                 LoginSessionEntity.find {
                                     LoginSessionTable.userId eq userId
-                                }.map {
-                                    SessionsResponse(
-                                        it.id.value,
-                                        it.expiresAt
-                                    )
+                                }.forEach {
+                                    DeviceEntity.findById(it.deviceId)?.let { deviceEntity ->
+                                        l += SessionsResponse(
+                                            id = it.id.value,
+                                            device = SessionDeviceInfo(
+                                                id = deviceEntity.id.value,
+                                                name = deviceEntity.name,
+                                                serial = deviceEntity.serial,
+                                                type = deviceEntity.type,
+                                                platform = deviceEntity.platform
+                                            ),
+                                            loginType = it.loginType,
+                                            expiresAt = it.expiresAt
+                                        )
+                                    }
                                 }
+                                l
                             }
                             call.returnOk(sessions)
                         }
@@ -170,7 +187,7 @@ object AuthRouting : BaseRouting {
                                     }
                                 }
                             }
-                            call.returnOk("Session deleted")
+                            call.returnOk("Session Deleted!")
                         }
                     }
                 }

@@ -12,6 +12,8 @@ import io.ktor.server.routing.Route
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import top.writerpass.kmplibrary.utils.println
+import top.writerpass.micromessage.auth.enums.LoginType
+import top.writerpass.micromessage.auth.request.DevicePlatform
 import top.writerpass.micromessage.auth.request.LoginRequest
 import top.writerpass.micromessage.utils.PasswordUtil
 import top.writerpass.micromessage.utils.SessionTokenGenerator
@@ -19,6 +21,8 @@ import top.writerpass.micromessage.core.data.service.auth.data.Credential
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionEntity
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionTable
 import top.writerpass.micromessage.core.data.service.auth.principal.UserInfoPrincipal
+import top.writerpass.micromessage.core.data.service.device.data.DeviceEntity
+import top.writerpass.micromessage.core.data.service.device.data.DeviceTable
 import top.writerpass.micromessage.core.data.service.user.entity.UserIdentifierEntity
 import top.writerpass.micromessage.core.data.service.user.table.UserIdentifierTable
 import kotlin.time.Clock
@@ -47,7 +51,10 @@ object AuthNodes {
                 realm = realmInfo
                 validate { credentials ->
 
+                    val now = Clock.System.now().toEpochMilliseconds()
+
                     val loginRequest = receive<LoginRequest>()
+                    val deviceSerial = loginRequest.device.serial
 
                     val username = credentials.name
                     val passwordHash0 = credentials.password
@@ -58,25 +65,42 @@ object AuthNodes {
                         val identifier = UserIdentifierEntity.find {
 //                            (UserIdentifierTable.type eq IdentifierType.Username) and
                             (UserIdentifierTable.content eq username)
-                        }.singleOrNull() ?: return@newSuspendedTransaction null
+                        }.singleOrNull()?.toData() ?: return@newSuspendedTransaction null
 
                         // 2. 查 password credential
                         val cred = Credential.Entity.find {
                             (Credential.CredentialTable.userId eq identifier.userId) and
-                                    (Credential.CredentialTable.identifierId eq identifier.id.value)
+                                    (Credential.CredentialTable.identifierId eq identifier.id)
 //                                    (Credential.CredentialTable.type eq CredentialType.Password)
-                        }.singleOrNull() ?: return@newSuspendedTransaction null
+                        }.singleOrNull()?.toData() ?: return@newSuspendedTransaction null
 
                         // 3. 校验密码
                         val calcHash = PasswordUtil.hash(passwordHash0, cred.salt)
                         if (calcHash != cred.passwordHash) return@newSuspendedTransaction null
 
-                        // 4. 查设备编号
+                        // 4. 根据 deviceSerial 查 Device
+                        val device = (DeviceEntity.find {
+                            DeviceTable.serial eq deviceSerial
+                        }.singleOrNull() ?: DeviceEntity.new {
+                            serial = deviceSerial
+                            name = loginRequest.device.hostname
+                            type = loginRequest.device.type
+                            platform = loginRequest.device.os?.platform ?: DevicePlatform.Unknown
+                            createdAt = now
+                            updatedAt = now
+                        }).toData()
 
+                        // 4. 根据 deviceSerial 查登陆 Session，找到并删除
+                        LoginSessionEntity.find {
+                            (LoginSessionTable.userId eq identifier.userId) and
+                                    (LoginSessionTable.id eq device.id)
+                        }.forEach { it.delete() }
 
-                        // 4. 创建登陆 Session
+                        // 5. 创建登陆 Session
                         val loginSession = LoginSessionEntity.new {
                             userId = identifier.userId
+                            deviceId = device.id
+                            loginType = LoginType.UsernamePassword
                             sessionToken = SessionTokenGenerator.generate()
                             expiresAt = Clock.System.now().toEpochMilliseconds() + 3600 * 1000
                         }.toData()
