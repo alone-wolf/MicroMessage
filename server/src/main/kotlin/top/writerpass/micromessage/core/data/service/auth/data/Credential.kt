@@ -6,7 +6,7 @@ import org.jetbrains.exposed.dao.LongEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.LongIdTable
 import top.writerpass.micromessage.core.data.base.BaseDataClass
-import top.writerpass.micromessage.core.data.enums.CredentialType
+import top.writerpass.micromessage.auth.enums.CredentialType
 import top.writerpass.micromessage.core.data.service.user.table.UserIdentifierTable
 import top.writerpass.micromessage.core.data.service.user.table.UserTable
 

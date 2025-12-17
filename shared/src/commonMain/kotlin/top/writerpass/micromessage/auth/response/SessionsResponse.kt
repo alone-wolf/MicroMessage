@@ -1,7 +1,8 @@
 package top.writerpass.micromessage.auth.response
 
 import kotlinx.serialization.Serializable
-import top.writerpass.micromessage.auth.enums.LoginType
+import top.writerpass.micromessage.auth.enums.CredentialType
+import top.writerpass.micromessage.auth.enums.IdentifierType
 import top.writerpass.micromessage.auth.request.DevicePlatform
 import top.writerpass.micromessage.auth.request.DeviceType
 
@@ -10,7 +11,8 @@ import top.writerpass.micromessage.auth.request.DeviceType
 data class SessionsResponse(
     val id: Long,
     val device: SessionDeviceInfo,
-    val loginType: LoginType,
+    val identifierType: IdentifierType,
+    val credentialType: CredentialType,
     // TODO: loginAt:Long
     val expiresAt: Long
 )

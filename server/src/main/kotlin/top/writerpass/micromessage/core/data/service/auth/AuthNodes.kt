@@ -12,9 +12,10 @@ import io.ktor.server.routing.Route
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import top.writerpass.kmplibrary.utils.println
-import top.writerpass.micromessage.auth.enums.LoginType
 import top.writerpass.micromessage.auth.request.DevicePlatform
 import top.writerpass.micromessage.auth.request.LoginRequest
+import top.writerpass.micromessage.auth.enums.CredentialType
+import top.writerpass.micromessage.auth.enums.IdentifierType
 import top.writerpass.micromessage.utils.PasswordUtil
 import top.writerpass.micromessage.utils.SessionTokenGenerator
 import top.writerpass.micromessage.core.data.service.auth.data.Credential
@@ -100,7 +101,8 @@ object AuthNodes {
                         val loginSession = LoginSessionEntity.new {
                             userId = identifier.userId
                             deviceId = device.id
-                            loginType = LoginType.UsernamePassword
+                            identifierType = IdentifierType.Username
+                            credentialType = CredentialType.Password
                             sessionToken = SessionTokenGenerator.generate()
                             expiresAt = Clock.System.now().toEpochMilliseconds() + 3600 * 1000
                         }.toData()

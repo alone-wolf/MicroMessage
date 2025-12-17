@@ -1,4 +1,4 @@
-package top.writerpass.micromessage.core.data.enums
+package top.writerpass.micromessage.auth.enums
 
 import kotlinx.serialization.Serializable
 

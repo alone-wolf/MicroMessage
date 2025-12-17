@@ -2,8 +2,8 @@ package top.writerpass.micromessage.core.data.service.user
 
 import top.writerpass.micromessage.core.data.base.BaseService
 import top.writerpass.micromessage.core.data.base.dbQuery
-import top.writerpass.micromessage.core.data.enums.CredentialType
-import top.writerpass.micromessage.core.data.enums.IdentifierType
+import top.writerpass.micromessage.auth.enums.CredentialType
+import top.writerpass.micromessage.auth.enums.IdentifierType
 import top.writerpass.micromessage.core.data.service.auth.data.Credential
 import top.writerpass.micromessage.core.data.service.user.entity.UserEntity
 import top.writerpass.micromessage.core.data.service.user.entity.UserIdentifierEntity

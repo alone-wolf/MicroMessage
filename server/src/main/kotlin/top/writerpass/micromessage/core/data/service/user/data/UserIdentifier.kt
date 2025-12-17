@@ -2,7 +2,7 @@ package top.writerpass.micromessage.core.data.service.user.data
 
 import kotlinx.serialization.Serializable
 import top.writerpass.micromessage.core.data.base.BaseDataClass
-import top.writerpass.micromessage.core.data.enums.IdentifierType
+import top.writerpass.micromessage.auth.enums.IdentifierType
 
 
 @Serializable

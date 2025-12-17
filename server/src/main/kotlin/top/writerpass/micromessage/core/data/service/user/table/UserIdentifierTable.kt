@@ -1,7 +1,7 @@
 package top.writerpass.micromessage.core.data.service.user.table
 
 import org.jetbrains.exposed.dao.id.LongIdTable
-import top.writerpass.micromessage.core.data.enums.IdentifierType
+import top.writerpass.micromessage.auth.enums.IdentifierType
 
 object UserIdentifierTable : LongIdTable() {
     val userId = long("user_id").references(UserTable.id)

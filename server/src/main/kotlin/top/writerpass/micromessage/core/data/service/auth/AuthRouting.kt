@@ -14,8 +14,8 @@ import top.writerpass.micromessage.auth.request.RegisterRequest
 import top.writerpass.micromessage.auth.response.SessionDeviceInfo
 import top.writerpass.micromessage.core.data.service.auth.response.RegisterResponse
 import top.writerpass.micromessage.core.data.base.BaseRouting
-import top.writerpass.micromessage.core.data.enums.CredentialType
-import top.writerpass.micromessage.core.data.enums.IdentifierType
+import top.writerpass.micromessage.auth.enums.CredentialType
+import top.writerpass.micromessage.auth.enums.IdentifierType
 import top.writerpass.micromessage.core.data.service.auth.data.Credential
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionEntity
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionTable
@@ -162,7 +162,8 @@ object AuthRouting : BaseRouting {
                                                 type = deviceEntity.type,
                                                 platform = deviceEntity.platform
                                             ),
-                                            loginType = it.loginType,
+                                            identifierType = it.identifierType,
+                                            credentialType = it.credentialType,
                                             expiresAt = it.expiresAt
                                         )
                                     }
