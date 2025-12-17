@@ -13,6 +13,10 @@ version = "1.0.0"
 
 kotlin {
     jvm()
+    iosArm64().binaries.framework {
+        baseName = "ComposeApp"
+        isStatic = true
+    }
 //    wasmJs {
 //        browser()
 //        binaries.executable()

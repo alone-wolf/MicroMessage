@@ -7,11 +7,12 @@ import top.writerpass.micromessage.server.modules.installCallLogging
 import top.writerpass.micromessage.server.modules.installHTTP
 import top.writerpass.micromessage.server.modules.installLifecycleHook
 import top.writerpass.micromessage.server.modules.installSerialization
+import top.writerpass.micromessage.utils.JvmLifecycle
 
 class ServerContainer(
     config: ServerConfig = ServerConfig.default,
     private val extraModules: Application.() -> Unit = {}
-) {
+): JvmLifecycle {
     val server = embeddedServer(
         factory = CIO,
         host = config.host,
@@ -29,7 +30,15 @@ class ServerContainer(
         server.startSuspend(wait = true)
     }
 
-    fun startServer(){
-        server.start(true)
+    suspend fun startServer(){
+        server.startSuspend()
+    }
+
+    override suspend fun start() {
+
+    }
+
+    override suspend fun stop() {
+        TODO("Not yet implemented")
     }
 }

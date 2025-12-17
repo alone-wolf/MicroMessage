@@ -2,12 +2,30 @@ package top.writerpass.micromessage
 
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
+import kotlinx.coroutines.runBlocking
+import top.writerpass.kmplibrary.utils.println
 import top.writerpass.micromessage.core.Singletons
 import top.writerpass.micromessage.core.data.service.auth.AuthNodes
 import top.writerpass.micromessage.server.ServerConfig
 import top.writerpass.micromessage.server.ServerContainer
+import top.writerpass.micromessage.utils.JvmLifecycle
 
-suspend fun applicationServer(){
+class MicroMessageServerApplication: JvmLifecycle{
+    init {
+        Singletons.register.registerTables()
+    }
+
+    override suspend fun start() {
+
+    }
+
+    override suspend fun stop() {
+
+    }
+
+}
+
+suspend fun applicationServer() {
     Singletons.register.registerTables()
     Singletons.databaseContainer.startWebServer()
 
@@ -35,7 +53,7 @@ suspend fun applicationServer(){
 // Application -> 应用程序
 
 
-fun main() {
+fun main() = runBlocking {
     Singletons.register.registerTables()
     Singletons.databaseContainer.startWebServer()
 
@@ -43,7 +61,7 @@ fun main() {
         config = ServerConfig.default,
         extraModules = {
             install(Authentication) {
-                AuthNodes.Password.run { install() } 
+                AuthNodes.Password.run { install() }
                 AuthNodes.RefreshToken.run { install() }
                 AuthNodes.NormalAccess.run { install() }
             }
@@ -51,4 +69,13 @@ fun main() {
         }
     )
     serverContainer.startServer()
+
+    Runtime.getRuntime().addShutdownHook(
+        Thread {
+            runBlocking {
+                "hello, bye bye!!!".println()
+            }
+        }
+    )
+
 }

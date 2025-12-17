@@ -86,7 +86,6 @@ class NavControllerWrapper(
                 val currentRouteBase =
                     (navBackStackEntry?.destination?.route ?: LoginPage.routeBase)
                         .split("/").first()
-                        .also { println("currentRouteBase: $it") }
                 Pages.pageRouteMap[currentRouteBase]!!
             }
         }

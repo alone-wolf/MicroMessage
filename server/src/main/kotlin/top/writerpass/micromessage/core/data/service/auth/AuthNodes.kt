@@ -64,15 +64,15 @@ object AuthNodes {
 
                         // 1. 查 identifier
                         val identifier = UserIdentifierEntity.find {
-//                            (UserIdentifierTable.type eq IdentifierType.Username) and
-                            (UserIdentifierTable.content eq username)
+                            (UserIdentifierTable.type eq IdentifierType.Username) and
+                                    (UserIdentifierTable.content eq username)
                         }.singleOrNull()?.toData() ?: return@newSuspendedTransaction null
 
                         // 2. 查 password credential
                         val cred = Credential.Entity.find {
                             (Credential.CredentialTable.userId eq identifier.userId) and
-                                    (Credential.CredentialTable.identifierId eq identifier.id)
-//                                    (Credential.CredentialTable.type eq CredentialType.Password)
+                                    (Credential.CredentialTable.identifierId eq identifier.id) and
+                                    (Credential.CredentialTable.type eq CredentialType.Password)
                         }.singleOrNull()?.toData() ?: return@newSuspendedTransaction null
 
                         // 3. 校验密码
@@ -91,20 +91,20 @@ object AuthNodes {
                             updatedAt = now
                         }).toData()
 
-                        // 4. 根据 deviceSerial 查登陆 Session，找到并删除
+                        // 5. 根据 deviceSerial 查登陆 Session，找到并删除
                         LoginSessionEntity.find {
                             (LoginSessionTable.userId eq identifier.userId) and
-                                    (LoginSessionTable.id eq device.id)
+                                    (LoginSessionTable.deviceId eq device.id)
                         }.forEach { it.delete() }
 
-                        // 5. 创建登陆 Session
+                        // 6. 创建登陆 Session
                         val loginSession = LoginSessionEntity.new {
                             userId = identifier.userId
                             deviceId = device.id
                             identifierType = IdentifierType.Username
                             credentialType = CredentialType.Password
                             sessionToken = SessionTokenGenerator.generate()
-                            expiresAt = Clock.System.now().toEpochMilliseconds() + 3600 * 1000
+                            expiresAt = now + 3600 * 1000
                         }.toData()
 
                         UserInfoPrincipal(
