@@ -43,6 +43,7 @@ import top.writerpass.micromessage.utils.setJsonBody
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
 class AuthService(private val client: HttpClient) : WithLogger {
+    override val logger: Logger = logger("AuthService")
     suspend fun register(username: String, password: String): Boolean {
         val passwordHash0 = password
         val r = client.post(ServerRoutes.Api.V1.Auth.Register.path) {
@@ -117,7 +118,5 @@ class AuthService(private val client: HttpClient) : WithLogger {
         r.dump(true).print()
         return r.responseOk()
     }
-
-    override val logger: Logger = logger("AuthService")
 }
 
