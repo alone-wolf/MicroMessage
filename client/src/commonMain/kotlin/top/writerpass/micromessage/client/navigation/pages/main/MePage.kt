@@ -44,6 +44,7 @@ import top.writerpass.kmplibrary.coroutine.withContextDefault
 import top.writerpass.micromessage.client.LocalMicroMessageSdkViewModel
 import top.writerpass.micromessage.client.LocalNavController
 import top.writerpass.micromessage.client.navigation.pages.base.IMainPage
+import top.writerpass.micromessage.client.navigation.pages.global.DeviceInfoPage
 import top.writerpass.micromessage.client.navigation.pages.global.MyQrCodePage
 import top.writerpass.micromessage.client.navigation.pages.global.SessionsPage
 import top.writerpass.micromessage.client.navigation.pages.global.SettingsPage
@@ -144,7 +145,7 @@ object MePage : IMainPage {
                     "Device: $deviceName",
                     Icons.Default.Devices
                 ) {
-//                    navController.open(SessionsPage)
+                    navController.open(DeviceInfoPage)
                 }
                 aa(
                     "Logout",

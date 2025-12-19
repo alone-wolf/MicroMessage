@@ -1,6 +1,7 @@
 package top.writerpass.micromessage.client.navigation.pages
 
 import top.writerpass.micromessage.client.navigation.pages.global.AudioCallPage
+import top.writerpass.micromessage.client.navigation.pages.global.DeviceInfoPage
 import top.writerpass.micromessage.client.navigation.pages.global.LoginPage
 import top.writerpass.micromessage.client.navigation.pages.global.MyAvatarPage
 import top.writerpass.micromessage.client.navigation.pages.global.MyProfilePage
@@ -55,6 +56,7 @@ object Pages {
 
         SearchPage,
         SettingsPage,
+        DeviceInfoPage,
         AudioCallPage,
         VideoCallPage,
         SessionsPage

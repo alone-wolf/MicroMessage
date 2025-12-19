@@ -13,6 +13,7 @@ import io.ktor.client.statement.bodyAsChannel
 import io.ktor.http.HttpStatusCode
 import io.ktor.utils.io.cancel
 import org.slf4j.Logger
+import top.writerpass.kmplibrary.utils.println
 import top.writerpass.micromessage.AuthStore
 import top.writerpass.micromessage.ReturnBody
 import top.writerpass.micromessage.ServerRoutes
@@ -29,6 +30,7 @@ import top.writerpass.micromessage.auth.request.LoginRequest
 import top.writerpass.micromessage.auth.request.RegisterRequest
 import top.writerpass.micromessage.auth.response.LoginResponse
 import top.writerpass.micromessage.auth.response.SessionsResponse
+import top.writerpass.micromessage.utils.DeviceInfoCollector
 import top.writerpass.micromessage.utils.logger
 import top.writerpass.micromessage.utils.WithLogger
 import top.writerpass.micromessage.utils.dump
@@ -52,40 +54,44 @@ class AuthService(private val client: HttpClient) : WithLogger {
     suspend fun login(username: String, password: String): Boolean {
         val r = client.post(ServerRoutes.Api.V1.Auth.Login.path) {
             basicAuth(username, password)
+
+            val deviceInfo = DeviceInfoCollector.collect()
+            deviceInfo.toString().println()
             LoginRequest(
-                device = LoginDevice(
-                    hostname = getDeviceName(),
-                    serial = generateDeviceSerial(),
-                    type = DeviceType.Desktop,
-                    os = DeviceOS(
-                        platform = DevicePlatform.Windows,
-                        version = "11 25H2",
-                        kernel = "NT10.0",
-                        arch = "X86_64"
-                    ),
-                    hardware = DeviceHardware(
-                        cpu = "M4",
-                        cores = "15",
-                        memMB = "111111",
-                        gpus = listOf("asdasdasd")
-                    ),
-                    network = listOf(
-                        DeviceNetwork(
-                            "127.0.0.1",
-                            mask = "255.255.255.0",
-                            gateway = "",
-                            version = IpVersion.IPv4,
-                        )
-                    ),
-                    security = DeviceSecurity(
-                        fingerprint = "aaaa",
-                        publicKey = "bbbbb",
-                        trusted = true
-                    ),
-                    runtime = DeviceRuntime(
-                        version = "0.0.1"
-                    )
-                )
+                device = deviceInfo
+//                device = LoginDevice(
+//                    hostname = getDeviceName(),
+//                    serial = generateDeviceSerial(),
+//                    type = DeviceType.Desktop,
+//                    os = DeviceOS(
+//                        platform = DevicePlatform.Windows,
+//                        version = "11 25H2",
+//                        kernel = "NT10.0",
+//                        arch = "X86_64"
+//                    ),
+//                    hardware = DeviceHardware(
+//                        cpu = "M4",
+//                        cores = "15",
+//                        memMB = "111111",
+//                        gpus = listOf("asdasdasd")
+//                    ),
+//                    network = listOf(
+//                        DeviceNetwork(
+//                            "127.0.0.1",
+//                            mask = "255.255.255.0",
+//                            gateway = "",
+//                            version = IpVersion.IPv4,
+//                        )
+//                    ),
+//                    security = DeviceSecurity(
+//                        fingerprint = "aaaa",
+//                        publicKey = "bbbbb",
+//                        trusted = true
+//                    ),
+//                    runtime = DeviceRuntime(
+//                        version = "0.0.1"
+//                    )
+//                )
             ).let(::setJsonBody)
         }
         val rr = r.body<ReturnBody<LoginResponse>>()

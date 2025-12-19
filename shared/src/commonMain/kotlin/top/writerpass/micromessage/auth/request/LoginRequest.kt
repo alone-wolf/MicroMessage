@@ -39,8 +39,8 @@ data class DeviceHardware(
 @Serializable
 data class DeviceNetwork(
     val ip: String,
-    val mask: String,
-    val gateway: String,
+    val mask: String?,
+    val gateway: String?,
     val version: IpVersion, // v4 or v6
 )
 
