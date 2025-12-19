@@ -1,6 +1,9 @@
 package top.writerpass.micromessage.client.navigation.pages.global
 
 import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CallEnd
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -9,7 +12,9 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import top.writerpass.cmplibrary.compose.FullSizeBox
+import top.writerpass.cmplibrary.compose.ables.IconComposeExt.CxIconButton
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxText
+import top.writerpass.micromessage.client.LocalNavController
 import top.writerpass.micromessage.client.navigation.pages.base.IPage
 
 object VideoCallPage : IPage {
@@ -30,7 +35,13 @@ object VideoCallPage : IPage {
     override val content: @Composable (AnimatedContentScope.(NavBackStackEntry) -> Unit)
         get() = {
             FullSizeBox {
-                "Video Call".CxText(modifier = Modifier.align(Alignment.Center))
+                val navController = LocalNavController.current
+                Column(modifier = Modifier.align(Alignment.Center)) {
+                    "Video Call".CxText()
+                    Icons.Default.CallEnd.CxIconButton {
+                        navController.popBackStack()
+                    }
+                }
             }
         }
 }

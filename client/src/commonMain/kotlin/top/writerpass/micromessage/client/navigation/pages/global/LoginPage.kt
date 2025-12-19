@@ -15,6 +15,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import top.writerpass.cmplibrary.compose.FullSizeBox
 import top.writerpass.cmplibrary.compose.ables.MutableStateComposeExt.CxOutlinedBasicTextField
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxText
@@ -75,5 +76,11 @@ object LoginPage : IPage {
                 }
             }
         }
+
+    override fun open(navController: NavController, vararg args: Any) {
+        navController.navigate(routeBase) {
+            navController.popBackStack()
+        }
+    }
 
 }

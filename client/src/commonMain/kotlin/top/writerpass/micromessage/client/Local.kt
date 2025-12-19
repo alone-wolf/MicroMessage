@@ -53,30 +53,14 @@ class NavControllerWrapper(
     private val navHostController: NavHostController
 ) {
     val c = navHostController
-    fun open(
-        page: IPage,
-        vararg args: Any
-    ) {
-        val newRoute = StringBuilder(page.routeBase).apply {
-            args.forEach { it ->
-                append("/")
-                append(it)
-            }
-        }.toString()
-        navHostController.navigate(newRoute)
-    }
+    fun open(page: IPage, vararg args: Any) = page.open(
+        navController = navHostController,
+        args = *args
+    )
 
-    fun login() {
-        navHostController.navigate(MessagePage.routeBase) {
-            navHostController.popBackStack()
-        }
-    }
+    fun login() = open(MessagePage)
 
-    fun logout() {
-        navHostController.navigate(LoginPage.routeBase) {
-            navHostController.popBackStack()
-        }
-    }
+    fun logout() = open(LoginPage)
 
     @Composable
     fun currentPageAsState(): State<IPage> {

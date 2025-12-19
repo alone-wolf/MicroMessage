@@ -1,17 +1,31 @@
 package top.writerpass.micromessage.client.navigation.pages.global
 
 import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.savedstate.read
 import top.writerpass.cmplibrary.LaunchedEffectOdd
+import top.writerpass.cmplibrary.compose.FullWidthRow
+import top.writerpass.cmplibrary.compose.ables.IconComposeExt.CxIcon
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxText
 import top.writerpass.micromessage.client.navigation.pages.base.IPage
 
@@ -27,10 +41,7 @@ object UserProfilePage : IPage {
         )
     override val label: String
         get() = "User Profile"
-    override val labelCompose: @Composable (() -> Unit)
-        get() = {
-            super.labelCompose.invoke()
-        }
+
     override val content: @Composable (AnimatedContentScope.(NavBackStackEntry) -> Unit)
         get() = {
             var userId by remember { mutableStateOf(-1L) }
@@ -39,6 +50,29 @@ object UserProfilePage : IPage {
                     userId = getLong("userId")
                 }
             }
-            "aaa ${userId}".CxText()
+            "UserId: ${userId}".CxText()
+
+            fun LazyListScope.infoItem(
+                label: String,
+                extra: @Composable () -> Unit,
+                onClick: () -> Unit = {}
+            ) {
+                item {
+                    FullWidthRow(
+                        modifier = Modifier
+                            .clickable(onClick = onClick)
+                            .padding(vertical = 18.dp)
+                            .padding(horizontal = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        content = {
+                            label.CxText(fontSize = 16.sp)
+                            Spacer(modifier = Modifier.weight(1f))
+                            extra()
+                            Icons.Default.ArrowRight.CxIcon()
+                        }
+                    )
+                }
+            }
+
         }
 }

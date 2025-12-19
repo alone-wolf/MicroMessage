@@ -23,6 +23,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material.icons.filled.VideoChat
 import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.outlined.EmojiEmotions
 import androidx.compose.material.icons.outlined.KeyboardVoice
@@ -75,11 +76,14 @@ object PrivateChatPage : IPage {
     override val actions: @Composable (RowScope.() -> Unit)
         get() = {
             val navController = LocalNavController.current
+            Icons.Default.VideoChat.CxIconButton {
+                navController.open(VideoCallPage, 100L)
+            }
             Icons.Default.Call.CxIconButton {
                 navController.open(AudioCallPage, 100L)
             }
             Icons.Default.MoreHoriz.CxIconButton {
-//                navController.open(UserProfilePage, 100L)
+                navController.open(PrivateChatDetailPage, 100L)
             }
         }
     override val fab: @Composable (() -> Unit)

@@ -8,9 +8,11 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.runtime.Composable
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.navigation.NavDeepLink
 import top.writerpass.cmplibrary.compose.ables.IconComposeExt.CxIconButton
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxText
+import top.writerpass.kmplibrary.utils.println
 import top.writerpass.micromessage.client.LocalNavController
 
 interface IPage {
@@ -50,4 +52,14 @@ interface IPage {
         get() = FabPosition.End
 
     val content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit
+
+    fun open(navController: NavController, vararg args: Any) {
+        val newRoute = StringBuilder(routeBase).apply {
+            args.forEach { it ->
+                append("/")
+                append(it)
+            }
+        }.toString()
+        navController.navigate(newRoute)
+    }
 }
