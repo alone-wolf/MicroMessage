@@ -12,15 +12,15 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import top.writerpass.kmplibrary.utils.println
 import top.writerpass.micromessage.auth.request.RegisterRequest
 import top.writerpass.micromessage.auth.response.SessionDeviceInfo
-import top.writerpass.micromessage.core.data.service.auth.response.RegisterResponse
 import top.writerpass.micromessage.core.data.base.BaseRouting
 import top.writerpass.micromessage.auth.enums.CredentialType
 import top.writerpass.micromessage.auth.enums.IdentifierType
+import top.writerpass.micromessage.auth.response.LoginResponse
+import top.writerpass.micromessage.auth.response.RegisterResponse
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionEntity
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionTable
 import top.writerpass.micromessage.core.data.service.auth.principal.UserInfoPrincipal
 import top.writerpass.micromessage.core.data.service.auth.request.ResetPasswordRequest
-import top.writerpass.micromessage.core.data.service.auth.response.LoginResponse
 import top.writerpass.micromessage.core.data.service.user.entity.UserEntity
 import top.writerpass.micromessage.core.data.service.user.entity.UserIdentifierEntity
 import top.writerpass.micromessage.core.data.service.user.table.UserIdentifierTable

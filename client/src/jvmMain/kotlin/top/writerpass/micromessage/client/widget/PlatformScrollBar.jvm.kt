@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
@@ -18,7 +19,7 @@ actual fun BoxScope.PlatformScrollBar(lazyListState: LazyListState) {
     )
     VerticalScrollbar(
         adapter = rememberScrollbarAdapter(scrollState = lazyListState),
-        modifier = Modifier,
+        modifier = Modifier.align(Alignment.CenterEnd),
         reverseLayout = false,
         style = newStyle
     )
