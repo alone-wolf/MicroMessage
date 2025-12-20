@@ -18,7 +18,7 @@ import top.writerpass.micromessage.client.navigation.pages.global.VideoCallPage
 import top.writerpass.micromessage.client.navigation.pages.main.ContactPage
 import top.writerpass.micromessage.client.navigation.pages.main.ExplorerPage
 import top.writerpass.micromessage.client.navigation.pages.main.MePage
-import top.writerpass.micromessage.client.navigation.pages.main.MessagePage
+import top.writerpass.micromessage.client.navigation.pages.main.ChatListPage
 
 object Pages {
 
@@ -29,7 +29,7 @@ object Pages {
      *    - 我的 v¸
      */
     val mainPages = listOf(
-        MessagePage,
+        ChatListPage,
         ContactPage,
         ExplorerPage,
         MePage

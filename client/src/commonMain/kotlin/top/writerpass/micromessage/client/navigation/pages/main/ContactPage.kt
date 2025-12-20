@@ -9,7 +9,9 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavBackStackEntry
+import top.writerpass.cmplibrary.LaunchedEffectOdd
 import top.writerpass.cmplibrary.compose.ables.IconComposeExt.CxIconButton
+import top.writerpass.micromessage.client.LocalMicroMessageSdkViewModel
 import top.writerpass.micromessage.client.navigation.pages.base.IMainPage
 
 
@@ -29,5 +31,10 @@ object ContactPage : IMainPage {
     override val fab: @Composable (() -> Unit)
         get() = {}
     override val content: @Composable (AnimatedContentScope.(NavBackStackEntry) -> Unit)
-        get() = {}
+        get() = {
+            val microMessageSdkViewModel = LocalMicroMessageSdkViewModel.current
+            LaunchedEffectOdd {
+                microMessageSdkViewModel.getFriends()
+            }
+        }
 }

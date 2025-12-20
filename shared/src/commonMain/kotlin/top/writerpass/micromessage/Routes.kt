@@ -35,6 +35,12 @@ object ServerRoutes {
                 object Info : PathNode("info", User)
                 object Update : PathNode("update", User)
             }
+
+            object Friend : PathNode("friends", V1) {
+
+//                object Info : PathNode("info", User)
+//                object Update : PathNode("update", User)
+            }
         }
     }
 }

@@ -60,6 +60,10 @@ kotlin {
                 // https://github.com/alexzhirkevich/qrose
                 implementation("io.github.alexzhirkevich:qrose:1.0.1")
 
+                // server
+                implementation(ktorLibs.server.core)
+
+
                 // client
                 implementation(ktorLibs.client.core)
                 implementation(ktorLibs.client.cio)

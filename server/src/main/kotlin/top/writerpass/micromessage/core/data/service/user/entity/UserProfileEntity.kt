@@ -23,7 +23,7 @@ class UserProfileEntity(userId: EntityID<Long>) : LongEntity(userId) {
 
     fun toData(): UserProfile {
         return UserProfile(
-            userId = userId.value,
+            userId = userId,
             nickname = nickname,
             avatarUrl = avatarUrl,
             gender = gender,

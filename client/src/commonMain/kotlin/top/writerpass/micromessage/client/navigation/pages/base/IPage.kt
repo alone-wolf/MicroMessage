@@ -12,7 +12,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDeepLink
 import top.writerpass.cmplibrary.compose.ables.IconComposeExt.CxIconButton
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxText
-import top.writerpass.kmplibrary.utils.println
 import top.writerpass.micromessage.client.LocalNavController
 
 interface IPage {
@@ -34,7 +33,7 @@ interface IPage {
     val showTopAppBar: Boolean
         get() = true
     val label: String
-    val labelCompose: @Composable () -> Unit
+    val labelCompose: @Composable (Map<String, Any?>) -> Unit
         get() = { label.CxText() }
     val leftTopIcon: @Composable () -> Unit
         get() = {

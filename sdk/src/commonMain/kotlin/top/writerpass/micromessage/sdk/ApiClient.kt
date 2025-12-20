@@ -1,8 +1,15 @@
 package top.writerpass.micromessage.sdk
 
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.statement.bodyAsText
 import kotlinx.serialization.Serializable
 import org.slf4j.Logger
+import top.writerpass.kmplibrary.utils.println
+import top.writerpass.micromessage.ReturnBody
+import top.writerpass.micromessage.ServerRoutes
+import top.writerpass.micromessage.friend.response.FriendListResponse
 import top.writerpass.micromessage.utils.WithLogger
 import top.writerpass.micromessage.utils.logger
 
@@ -17,6 +24,7 @@ class ApiClient(baseUrl: String) {
 
     val auth = AuthService(client)
     val user = UserService(client)
+    val friend = FriendService(client)
 //    val message = MessageService(client)
 }
 
@@ -55,7 +63,9 @@ class UserService(private val client: HttpClient) : WithLogger {
 
 class FriendService(private val client: HttpClient) : WithLogger {
     override val logger: Logger = logger("FriendService")
-    suspend fun getFriendsWithUserId(userId: Long) {
+    suspend fun getUserFriends(): ReturnBody<List<FriendListResponse>> {
+        val r = client.get(ServerRoutes.Api.V1.Friend.path)
+        return r.body<ReturnBody<List<FriendListResponse>>>()
     }
 
     suspend fun getFriendWithId(friendId: Long) {

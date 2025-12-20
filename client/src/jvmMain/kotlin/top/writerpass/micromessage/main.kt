@@ -14,10 +14,12 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import top.writerpass.micromessage.client.viewmodels.ApplicationViewModel
 import top.writerpass.micromessage.client.LocalApplicationViewModel
+import top.writerpass.micromessage.client.LocalChatListViewModel
 import top.writerpass.micromessage.client.LocalCurrentPage
 import top.writerpass.micromessage.client.LocalMicroMessageSdkViewModel
 import top.writerpass.micromessage.client.LocalNavController
 import top.writerpass.micromessage.client.LocalSnackbarHostState
+import top.writerpass.micromessage.client.viewmodels.ChatListViewModel
 import top.writerpass.micromessage.client.viewmodels.MicroMessageSdkViewModel
 import top.writerpass.micromessage.client.rememberNavControllerWrapper
 import top.writerpass.micromessage.client.rememberViewModelStoreOwner
@@ -65,9 +67,10 @@ fun main() {
         ) { MicroMessageSdkViewModel() }
         val applicationViewModel = viewModel(
             viewModelStoreOwner = viewModelStoreOwner
-        ) {
-            ApplicationViewModel()
-        }
+        ) { ApplicationViewModel() }
+        val chatListViewModel = viewModel(
+            viewModelStoreOwner = viewModelStoreOwner
+        ) { ChatListViewModel() }
 
         LaunchedEffect(applicationViewModel.showMainWindow) {
             if (applicationViewModel.showMainWindow.not()) {
@@ -82,7 +85,8 @@ fun main() {
                 LocalSnackbarHostState provides snackbarHostState,
                 LocalCurrentPage provides currentPage,
                 LocalApplicationViewModel provides applicationViewModel,
-                LocalMicroMessageSdkViewModel provides microMessageSdkViewModel
+                LocalMicroMessageSdkViewModel provides microMessageSdkViewModel,
+                LocalChatListViewModel provides chatListViewModel
             ),
             content = {
                 AppMainWindow()

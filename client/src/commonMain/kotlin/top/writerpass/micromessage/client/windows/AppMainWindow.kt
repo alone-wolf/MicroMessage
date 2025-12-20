@@ -22,6 +22,7 @@ import androidx.window.core.layout.WindowSizeClass
 import top.writerpass.cmplibrary.compose.ables.IconComposeExt.CxIcon
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxText
 import top.writerpass.micromessage.client.LocalApplicationViewModel
+import top.writerpass.micromessage.client.LocalChatListViewModel
 import top.writerpass.micromessage.client.LocalCurrentPage
 import top.writerpass.micromessage.client.LocalNavController
 import top.writerpass.micromessage.client.LocalSnackbarHostState
@@ -29,6 +30,7 @@ import top.writerpass.micromessage.client.navigation.AppMainWindowNavHost
 import top.writerpass.micromessage.client.navigation.pages.Pages
 import top.writerpass.micromessage.client.navigation.pages.base.IMainPage
 import top.writerpass.micromessage.client.navigation.pages.global.LoginPage
+import top.writerpass.micromessage.client.navigation.pages.global.PrivateChatPage
 
 object AdaptiveWindow {
     sealed interface X {
@@ -47,9 +49,10 @@ object AdaptiveWindow {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppMainWindow() {
-    val currentPage = LocalCurrentPage.current
+    val (currentPage, pageArgs) = LocalCurrentPage.current
     val snackbarHostState = LocalSnackbarHostState.current
     val applicationViewModel = LocalApplicationViewModel.current
+    val chatListViewModel = LocalChatListViewModel.current
     Window(
         state = rememberWindowState(
             width = 400.dp,
@@ -87,7 +90,7 @@ fun AppMainWindow() {
                     if (showTopAppBar) {
                         if (currentPage.showTopAppBar) {
                             TopAppBar(
-                                title = currentPage.labelCompose,
+                                title = { currentPage.labelCompose(pageArgs) },
                                 navigationIcon = currentPage.leftTopIcon,
                                 actions = currentPage.actions
                             )

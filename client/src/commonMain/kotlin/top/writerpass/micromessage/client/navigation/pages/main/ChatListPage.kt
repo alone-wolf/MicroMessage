@@ -22,6 +22,8 @@ import androidx.compose.material.icons.outlined.PushPin
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,6 +43,7 @@ import top.writerpass.cmplibrary.compose.ables.IconComposeExt.CxIconButton
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxText
 import top.writerpass.micromessage.chat.enums.ChatType
 import top.writerpass.micromessage.client.LocalApplicationViewModel
+import top.writerpass.micromessage.client.LocalChatListViewModel
 import top.writerpass.micromessage.client.LocalNavController
 import top.writerpass.micromessage.client.navigation.pages.base.IMainPage
 import top.writerpass.micromessage.client.navigation.pages.global.PrivateChatPage
@@ -52,137 +55,28 @@ import top.writerpass.micromessage.client.widget.contextMenuAnchor
 
 @Serializable
 data class Chat(
-    val name:String,
-    val read: Boolean,
-    val pin: Boolean,
-    val mute: Boolean,
-    val lastMessage:String,
+    val id: Long,
+    val name: String,
+    val read: Boolean = false,
+    val pin: Boolean = false,
+    val mute: Boolean = false,
+    val hide: Boolean = false,
+    val lastMessage: String,
     val lastMessageTime: Long,
     val unreadCount: Int,
     val chatType: ChatType = ChatType.Private
 )
 
-private val chatList = listOf(
-    Chat(
-        name = "张三",
-        read = false,
-        pin = true,
-        mute = true,
-        lastMessage = "Icons.AutoMirrored.Outlined.Message",
-        lastMessageTime = 1111111111111,
-        unreadCount = 10
-    ),
-    Chat(
-        name = "李四",
-        read = true,
-        pin = true,
-        mute = true,
-        lastMessage = "object MessagePage : IMainPage",
-        lastMessageTime = 2221111111111,
-        unreadCount = 0
-    ),
-    Chat(
-        name = "王五",
-        read = false,
-        pin = false,
-        mute = false,
-        lastMessage = "今晚一起吃饭？",
-        lastMessageTime = 2222222222222,
-        unreadCount = 3
-    ),
-    Chat(
-        name = "赵六",
-        read = true,
-        pin = false,
-        mute = false,
-        lastMessage = "收到，我这边已处理",
-        lastMessageTime = 2223333333333,
-        unreadCount = 0
-    ),
-    Chat(
-        name = "钱七",
-        read = false,
-        pin = true,
-        mute = false,
-        lastMessage = "PR 已经提了，帮忙看下",
-        lastMessageTime = 2224444444444,
-        unreadCount = 2
-    ),
-    Chat(
-        name = "孙八",
-        read = true,
-        pin = false,
-        mute = true,
-        lastMessage = "😂😂😂",
-        lastMessageTime = 2225555555555,
-        unreadCount = 0
-    ),
-    Chat(
-        name = "周九",
-        read = false,
-        pin = false,
-        mute = false,
-        lastMessage = "文档我已经更新到 Confluence",
-        lastMessageTime = 2226666666666,
-        unreadCount = 5
-    ),
-    Chat(
-        name = "吴十",
-        read = true,
-        pin = false,
-        mute = false,
-        lastMessage = "OK，没问题",
-        lastMessageTime = 2227777777777,
-        unreadCount = 0
-    ),
-    Chat(
-        name = "郑十一",
-        read = false,
-        pin = false,
-        mute = true,
-        lastMessage = "明天几点开会？",
-        lastMessageTime = 2228888888888,
-        unreadCount = 1
-    ),
-    Chat(
-        name = "王十二",
-        read = true,
-        pin = true,
-        mute = false,
-        lastMessage = "Release 已发布到生产",
-        lastMessageTime = 2229999999999,
-        unreadCount = 0
-    ),
-    Chat(
-        name = "冯十三",
-        read = false,
-        pin = false,
-        mute = false,
-        lastMessage = "这个问题我复现了一下",
-        lastMessageTime = 2231111111111,
-        unreadCount = 4
-    ),
-    Chat(
-        name = "陈十四",
-        read = true,
-        pin = false,
-        mute = false,
-        lastMessage = "下周我请假两天",
-        lastMessageTime = 2232222222222,
-        unreadCount = 0
-    )
-)
 
-
-object MessagePage : IMainPage {
+object ChatListPage : IMainPage {
     override val icon: ImageVector
         get() = Icons.AutoMirrored.Outlined.Message
     override val iconSelected: ImageVector
         get() = Icons.AutoMirrored.Filled.Message
     override val routeBase: String
-        get() = "message"
+        get() = "chat-list"
     override val label: String
-        get() = "Message"
+        get() = "Chats"
     override val leftTopIcon: @Composable (() -> Unit)
         get() = {}
     override val actions: @Composable (RowScope.() -> Unit)
@@ -216,6 +110,9 @@ object MessagePage : IMainPage {
             val navController = LocalNavController.current
             val contextMenuState = remember { ContextMenuState<Chat>() }
             val lazyListState = rememberLazyListState()
+            val chatListViewModel = LocalChatListViewModel.current
+
+            val chats by chatListViewModel.chatListFlow.collectAsState()
 
             FullSizeBox {
                 LazyColumn(
@@ -223,13 +120,34 @@ object MessagePage : IMainPage {
                     state = lazyListState
                 ) {
                     items(
-                        items = chatList,
+                        items = chats,
                         key = { it.hashCode() },
-                        itemContent = { chat->
+                        itemContent = { chat ->
                             FullWidthRow(
                                 modifier = Modifier
                                     .clickable {
-                                        navController.open(PrivateChatPage, 100)
+                                        when (chat.chatType) {
+                                            ChatType.Private -> {
+                                                navController.open(
+                                                    PrivateChatPage,
+                                                    chat.id,
+                                                    chat.name
+                                                )
+                                            }
+
+                                            ChatType.Temp -> {
+
+                                            }
+
+                                            ChatType.Group -> {
+
+                                            }
+
+                                            ChatType.Global -> {
+
+                                            }
+                                        }
+
                                     }
                                     .contextMenuAnchor(
                                         state = contextMenuState,
@@ -263,43 +181,6 @@ object MessagePage : IMainPage {
                             }
                         }
                     )
-//                    items(100) { index ->
-//                        FullWidthRow(
-//                            modifier = Modifier
-//                                .clickable {
-//                                    navController.open(PrivateChatPage, index)
-//                                }
-//                                .contextMenuAnchor(
-//                                    state = contextMenuState,
-//                                    payload = index
-//                                )
-//                                .padding(
-//                                    horizontal = 12.dp,
-//                                    vertical = 8.dp
-//                                ),
-//                            verticalAlignment = Alignment.CenterVertically,
-//                        ) {
-//                            Icons.Default.Person2.CxIcon(
-//                                modifier = Modifier
-//                                    .size(48.dp)
-//                                    .clip(RoundedCornerShape(6.dp))
-//                            )
-//                            Column(modifier = Modifier.weight(1f)) {
-//                                "用户${index}用户${index}用户${index}用户${index}".CxText(
-//                                    maxLines = 1,
-//                                    overflow = TextOverflow.Ellipsis,
-//                                    fontSize = 16.sp,
-//                                    fontWeight = FontWeight.Normal
-//                                )
-//                                "[18] 这是一条测试消息".CxText(
-//                                    maxLines = 1,
-//                                    overflow = TextOverflow.Ellipsis,
-//                                    fontSize = 14.sp,
-//                                    fontWeight = FontWeight.Light
-//                                )
-//                            }
-//                        }
-//                    }
                 }
                 PlatformScrollBar(
                     lazyListState = lazyListState
@@ -317,6 +198,9 @@ object MessagePage : IMainPage {
                     DropdownMenuItem(
                         text = { "Set Unread".CxText() },
                         onClick = {
+                            chatListViewModel.updateChat(data.id){
+                                copy(read = false)
+                            }
                             contextMenuState.hide()
                         }
                     )
@@ -324,18 +208,37 @@ object MessagePage : IMainPage {
                         text = { "Set Mute".CxText() },
                         onClick = {
                             contextMenuState.hide()
+                            chatListViewModel.updateChat(data.id){
+                                copy(mute = true)
+                            }
                         }
                     )
-                    DropdownMenuItem(
-                        text = { "Hide".CxText() },
-                        onClick = {
-                            contextMenuState.hide()
-                        }
-                    )
+                    if (data.hide){
+                        DropdownMenuItem(
+                            text = { "Show".CxText() },
+                            onClick = {
+                                contextMenuState.hide()
+                                chatListViewModel.updateChat(data.id){
+                                    copy(hide = false)
+                                }
+                            }
+                        )
+                    }else{
+                        DropdownMenuItem(
+                            text = { "Hide".CxText() },
+                            onClick = {
+                                contextMenuState.hide()
+                                chatListViewModel.updateChat(data.id){
+                                    copy(hide = true)
+                                }
+                            }
+                        )
+                    }
                     DropdownMenuItem(
                         text = { "Delete".CxText() },
                         onClick = {
                             contextMenuState.hide()
+                            chatListViewModel.removeChat(data.id)
                         }
                     )
                 }

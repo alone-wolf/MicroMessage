@@ -1,18 +1,13 @@
 package top.writerpass.micromessage.core.data.service.user.table
 
-import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.dao.id.IdTable
-import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.dao.id.LongIdTable
 import top.writerpass.micromessage.core.data.enums.Gender
 import top.writerpass.micromessage.core.data.enums.Language
 
-object UserProfileTable : IdTable<Long>() {
-    override val id: Column<EntityID<Long>> = reference(
-        name = "user_id",
-        refColumn = UserTable.id
-    ).uniqueIndex()
-
-    val userId = id
+object UserProfileTable : LongIdTable() {
+    val userId = long("user_id")
+        .references(UserTable.id)
+        .uniqueIndex()
     val nickname = varchar(
         name = "nickname",
         length = 100

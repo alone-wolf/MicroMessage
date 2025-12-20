@@ -25,8 +25,11 @@ import top.writerpass.micromessage.core.data.service.user.entity.UserEntity
 import top.writerpass.micromessage.core.data.service.user.entity.UserIdentifierEntity
 import top.writerpass.micromessage.core.data.service.user.table.UserIdentifierTable
 import top.writerpass.micromessage.auth.response.SessionsResponse
+import top.writerpass.micromessage.core.data.enums.Gender
+import top.writerpass.micromessage.core.data.enums.Language
 import top.writerpass.micromessage.core.data.service.auth.data.CredentialEntity
 import top.writerpass.micromessage.core.data.service.device.data.DeviceEntity
+import top.writerpass.micromessage.core.data.service.user.entity.UserProfileEntity
 import top.writerpass.micromessage.returnBadRequest
 import top.writerpass.micromessage.returnConflict
 import top.writerpass.micromessage.returnOk
@@ -51,8 +54,22 @@ object AuthRouting : BaseRouting {
                     }.any()
                     if (exists) return@newSuspendedTransaction null  // null => 注册失败，外层处理
 
-                    // 2. 创建 user
+                    // 2. 创建 user&profile
                     val user = UserEntity.new { createdAt = now }
+
+                    val userProfile = UserProfileEntity.new {
+                        userId = user.id.value
+                        nickname = "User with id=${userId}"
+                        avatarUrl = ""
+                        gender = Gender.Secret
+                        bio = "biobiobio"
+                        regionCountry = "C"
+                        regionProvince = "P"
+                        regionCity = "CC"
+                        language = Language.ZH
+                        email = "eeee@ee.e"
+                        phone = "11111111111"
+                    }
 
                     // 3. 创建 identifier(username)
                     val identifier = UserIdentifierEntity.new {

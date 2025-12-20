@@ -8,6 +8,8 @@ import top.writerpass.kmplibrary.utils.println
 import top.writerpass.micromessage.AuthStore
 import top.writerpass.micromessage.client.Singleton
 import top.writerpass.micromessage.auth.response.SessionsResponse
+import top.writerpass.micromessage.core.data.service.friend.data.FriendRelation
+import top.writerpass.micromessage.friend.response.FriendListResponse
 
 class MicroMessageSdkViewModel : BaseViewModel() {
     fun register(username: String, password: String, onSuccess: () -> Unit) {
@@ -61,6 +63,14 @@ class MicroMessageSdkViewModel : BaseViewModel() {
                     }
                 }
             }
+        }
+    }
+
+    var friendList by mutableStateOf<List<FriendListResponse>>(emptyList())
+
+    fun getFriends(){
+        runInViewModelIO {
+            Singleton.apiClient.friend.getUserFriends()
         }
     }
 }

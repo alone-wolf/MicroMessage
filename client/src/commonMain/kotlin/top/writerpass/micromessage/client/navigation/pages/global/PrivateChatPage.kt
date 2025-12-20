@@ -42,12 +42,14 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.savedstate.read
+import top.writerpass.cmplibrary.LaunchedEffectOdd
 import top.writerpass.cmplibrary.compose.FullSizeBox
 import top.writerpass.cmplibrary.compose.FullSizeColumn
 import top.writerpass.cmplibrary.compose.FullWidthRow
 import top.writerpass.cmplibrary.compose.ables.IconComposeExt.CxIconButton
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxText
 import top.writerpass.cmplibrary.compose.ables.TextComposeExt.CxTextButton
+import top.writerpass.micromessage.client.LocalChatListViewModel
 import top.writerpass.micromessage.client.LocalNavController
 import top.writerpass.micromessage.client.navigation.pages.base.IPage
 import top.writerpass.micromessage.client.viewmodels.PrivateChatMessage
@@ -63,9 +65,24 @@ object PrivateChatPage : IPage {
             navArgument("chatId") {
                 type = NavType.LongType
                 defaultValue = -1L
-            })
+            },
+            navArgument("chatName") {
+                type = NavType.StringType
+                defaultValue = ""
+            }
+        )
     override val label: String
         get() = "Private Chat"
+    override val labelCompose: @Composable ((Map<String, Any?>) -> Unit)
+        get() = { arguments ->
+            val chatListViewModel = LocalChatListViewModel.current
+            arguments["chatId"]
+                ?.toString()
+                ?.toLongOrNull()
+                ?.let { id ->
+                    chatListViewModel.getById(id)?.name?.CxText()
+                }
+        }
     override val leftTopIcon: @Composable (() -> Unit)
         get() = {
             val navController = LocalNavController.current
@@ -108,6 +125,10 @@ object PrivateChatPage : IPage {
                     }
                 }
             } else {
+                val chatListViewModel = LocalChatListViewModel.current
+                LaunchedEffectOdd {
+                    chatListViewModel.getById(chatId)
+                }
                 FullSizeColumn {
                     LazyColumn(
                         modifier = Modifier.weight(1f),

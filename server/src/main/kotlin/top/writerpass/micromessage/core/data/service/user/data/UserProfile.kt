@@ -15,7 +15,7 @@ data class UserProfile(
     val regionCountry: String?,
     val regionProvince: String?,
     val regionCity: String?,
-    val language: Language = Language.ZH,
+    val language: Language,
     val email: String?,
     val phone: String?,
 ) : BaseDataClass {
