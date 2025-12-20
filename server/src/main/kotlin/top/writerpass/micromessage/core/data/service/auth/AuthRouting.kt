@@ -16,7 +16,6 @@ import top.writerpass.micromessage.core.data.service.auth.response.RegisterRespo
 import top.writerpass.micromessage.core.data.base.BaseRouting
 import top.writerpass.micromessage.auth.enums.CredentialType
 import top.writerpass.micromessage.auth.enums.IdentifierType
-import top.writerpass.micromessage.core.data.service.auth.data.Credential
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionEntity
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionTable
 import top.writerpass.micromessage.core.data.service.auth.principal.UserInfoPrincipal
@@ -26,6 +25,7 @@ import top.writerpass.micromessage.core.data.service.user.entity.UserEntity
 import top.writerpass.micromessage.core.data.service.user.entity.UserIdentifierEntity
 import top.writerpass.micromessage.core.data.service.user.table.UserIdentifierTable
 import top.writerpass.micromessage.auth.response.SessionsResponse
+import top.writerpass.micromessage.core.data.service.auth.data.CredentialEntity
 import top.writerpass.micromessage.core.data.service.device.data.DeviceEntity
 import top.writerpass.micromessage.returnBadRequest
 import top.writerpass.micromessage.returnConflict
@@ -68,7 +68,7 @@ object AuthRouting : BaseRouting {
                     val saltStr = PasswordUtil.generateSalt()
                     val hash = PasswordUtil.hash(req.passwordHash0, saltStr)
 
-                    Credential.Entity.new {
+                    CredentialEntity.new {
                         userId = user.id.value
                         identifierId = identifier.id.value
                         type = CredentialType.Password

@@ -1,6 +1,7 @@
 package top.writerpass.micromessage.sdk
 
 import io.ktor.client.HttpClient
+import kotlinx.serialization.Serializable
 import org.slf4j.Logger
 import top.writerpass.micromessage.utils.WithLogger
 import top.writerpass.micromessage.utils.logger
@@ -54,9 +55,17 @@ class UserService(private val client: HttpClient) : WithLogger {
 
 class FriendService(private val client: HttpClient) : WithLogger {
     override val logger: Logger = logger("FriendService")
-    suspend fun getUserBaseInfoWithId(userId: Long) {
+    suspend fun getFriendsWithUserId(userId: Long) {
+    }
+
+    suspend fun getFriendWithId(friendId: Long) {
 
     }
+
+    suspend fun requestFriend() {
+
+    }
+
 }
 
 class ChatService(private val client: HttpClient) : WithLogger {

@@ -4,7 +4,7 @@ import top.writerpass.micromessage.core.data.base.BaseService
 import top.writerpass.micromessage.core.data.base.dbQuery
 import top.writerpass.micromessage.auth.enums.CredentialType
 import top.writerpass.micromessage.auth.enums.IdentifierType
-import top.writerpass.micromessage.core.data.service.auth.data.Credential
+import top.writerpass.micromessage.core.data.service.auth.data.CredentialEntity
 import top.writerpass.micromessage.core.data.service.user.entity.UserEntity
 import top.writerpass.micromessage.core.data.service.user.entity.UserIdentifierEntity
 import java.util.*
@@ -34,7 +34,7 @@ object UserService : BaseService {
                 updatedAt = newCreatedAt
             }.toData()
 
-            val newCredential = Credential.Entity.new {
+            val newCredential = CredentialEntity.new {
                 userId = newUserId
                 identifierId = newUserIdentifier.id
                 type = CredentialType.Password

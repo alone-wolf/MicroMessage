@@ -18,7 +18,8 @@ import top.writerpass.micromessage.auth.enums.CredentialType
 import top.writerpass.micromessage.auth.enums.IdentifierType
 import top.writerpass.micromessage.utils.PasswordUtil
 import top.writerpass.micromessage.utils.SessionTokenGenerator
-import top.writerpass.micromessage.core.data.service.auth.data.Credential
+import top.writerpass.micromessage.core.data.service.auth.data.CredentialEntity
+import top.writerpass.micromessage.core.data.service.auth.data.CredentialTable
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionEntity
 import top.writerpass.micromessage.core.data.service.auth.data.LoginSessionTable
 import top.writerpass.micromessage.core.data.service.auth.principal.UserInfoPrincipal
@@ -69,10 +70,10 @@ object AuthNodes {
                         }.singleOrNull()?.toData() ?: return@newSuspendedTransaction null
 
                         // 2. 查 password credential
-                        val cred = Credential.Entity.find {
-                            (Credential.CredentialTable.userId eq identifier.userId) and
-                                    (Credential.CredentialTable.identifierId eq identifier.id) and
-                                    (Credential.CredentialTable.type eq CredentialType.Password)
+                        val cred = CredentialEntity.find {
+                            (CredentialTable.userId eq identifier.userId) and
+                                    (CredentialTable.identifierId eq identifier.id) and
+                                    (CredentialTable.type eq CredentialType.Password)
                         }.singleOrNull()?.toData() ?: return@newSuspendedTransaction null
 
                         // 3. 校验密码

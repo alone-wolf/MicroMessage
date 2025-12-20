@@ -29,8 +29,6 @@ object LoginSessionTable : LongIdTable() {
 
     val identifierType = enumeration<IdentifierType>("identifier_type")
     val credentialType = enumeration<CredentialType>("credential_type")
-
-    //    val loginType = enumeration<LoginType>("login_type")
     val sessionToken = varchar(
         name = "session_token",
         length = 100
