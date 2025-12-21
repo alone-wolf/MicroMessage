@@ -68,6 +68,7 @@ kotlin {
 
 
                 implementation("org.jetbrains.compose.material3.adaptive:adaptive:1.2.0")
+                implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.5.0-alpha11")
 
                 implementation(libs.kotlinx.datetime)
             }

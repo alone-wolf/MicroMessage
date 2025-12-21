@@ -3,10 +3,10 @@ package top.writerpass.micromessage.sdk
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import io.ktor.client.statement.bodyAsText
-import kotlinx.serialization.Serializable
+import io.ktor.client.request.post
+import io.ktor.client.statement.bodyAsChannel
+import io.ktor.utils.io.cancel
 import org.slf4j.Logger
-import top.writerpass.kmplibrary.utils.println
 import top.writerpass.micromessage.ReturnBody
 import top.writerpass.micromessage.ServerRoutes
 import top.writerpass.micromessage.friend.response.FriendListResponse
@@ -21,6 +21,11 @@ class ApiClient(baseUrl: String) {
 //        val b = r.bodyAsText()
 //        print(b)
 //    }
+
+    suspend fun prepareData(){
+        val r = client.post("/api/prepare-data")
+        r.bodyAsChannel().cancel()
+    }
 
     val auth = AuthService(client)
     val user = UserService(client)

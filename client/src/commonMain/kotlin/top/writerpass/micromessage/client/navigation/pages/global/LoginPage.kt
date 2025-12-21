@@ -39,12 +39,13 @@ object LoginPage : IPage {
             FullSizeBox {
                 val navController = LocalNavController.current
                 val microMessageSdkViewModel = LocalMicroMessageSdkViewModel.current
+                val username = Mutable.someString("wolf")
+                val password = Mutable.someString("asdfghjkl")
                 Column(
                     modifier = Modifier.align(Alignment.Center),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    val username = Mutable.someString("wolf")
-                    val password = Mutable.someString("asdfghjkl")
+
                     "MicroMessage".CxText(
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold
@@ -72,6 +73,13 @@ object LoginPage : IPage {
                     }
                     "Reset Password".CxTextButton {
                         navController.open(ResetPasswordPage)
+                    }
+                }
+                "Prepare Data".CxTextButton {
+                    val u = username.value
+                    val p = password.value
+                    microMessageSdkViewModel.register(u,p){
+                        microMessageSdkViewModel.prepareData()
                     }
                 }
             }

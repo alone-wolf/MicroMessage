@@ -12,6 +12,12 @@ import top.writerpass.micromessage.core.data.service.friend.data.FriendRelation
 import top.writerpass.micromessage.friend.response.FriendListResponse
 
 class MicroMessageSdkViewModel : BaseViewModel() {
+
+    fun prepareData(){
+        runInViewModelIO {
+            Singleton.apiClient.prepareData()
+        }
+    }
     fun register(username: String, password: String, onSuccess: () -> Unit) {
         runInViewModelIO {
             if (Singleton.apiClient.auth.register(username, password)) {
@@ -67,10 +73,17 @@ class MicroMessageSdkViewModel : BaseViewModel() {
     }
 
     var friendList by mutableStateOf<List<FriendListResponse>>(emptyList())
+        private set
 
     fun getFriends(){
         runInViewModelIO {
-            Singleton.apiClient.friend.getUserFriends()
+            Singleton.apiClient.friend.getUserFriends().let {r->
+                r.data?.let { friendListResponse->
+                    withContextMain {
+                        friendList = friendListResponse
+                    }
+                }
+            }
         }
     }
 }
