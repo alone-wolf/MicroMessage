@@ -35,9 +35,9 @@ dependencyResolutionManagement {
         create("ktorLibs") {
             from("io.ktor:ktor-version-catalog:3.2.3")
         }
-        create("kotlinLibs") {
-            from(files("./gradle/KotlinLibs.versions.toml"))
-        }
+//        create("kotlinLibs") {
+//            from(files("./gradle/KotlinLibs.versions.toml"))
+//        }
         create("databaseORM") {
             from(files("./gradle/DBORM.versions.toml"))
         }
@@ -50,7 +50,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "MicroMessage"
 
-includeBuild("../KotlinLibs")
+//includeBuild("../KotlinLibs")
 //implementation("top.writerpass.libs:KMPLibrary:1.0.0")
 //implementation("top.writerpass.libs:CMPLibrary:1.0.0")
 
@@ -58,3 +58,5 @@ include(":server")
 include(":sdk")
 include(":client")
 include(":shared")
+include(":CMPLibrary")
+include(":KMPLibrary")

@@ -1,14 +1,14 @@
 [versions]
 agp = "8.11.1"
 kotlin = "2.3.0"
-kotlinStdlib = "2.2.20"
+kotlinStdlib = "2.3.0"
 kotlin-reflect = "2.2.20"
 kotlinTest = "2.2.20"
 android-minSdk = "24"
 android-compileSdk = "36"
 android-targetSdk = "34"
 compose-multiplatform = "1.9.3"
-logback = "1.5.22"
+logback = "1.5.23"
 android-test = "1.7.0"
 junit = "1.3.0"
 coreKtx = "1.17.0"
@@ -56,14 +56,14 @@ material = { group = "com.google.android.material", name = "material", version.r
 material3 = { group = "androidx.compose.material3", name = "material3" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+#compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 logger-napier = { module = "io.github.aakira:napier", version.ref = "napierVersion" }
-ui = { group = "androidx.compose.ui", name = "ui" }
-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+#ui = { group = "androidx.compose.ui", name = "ui" }
+#ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+#ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+#ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+#ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+#ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
 kotlinx-html = { module = "org.jetbrains.kotlinx:kotlinx-html", version.ref = "kotlinx-html" }

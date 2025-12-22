@@ -47,8 +47,10 @@ kotlin {
                 implementation(libs.androidx.lifecycle.viewmodel)
                 implementation(libs.logger.napier)
 
-                implementation("top.writerpass.libs:KMPLibrary:1.0.0")
-                implementation("top.writerpass.libs:CMPLibrary:1.0.0")
+                implementation(project(":KMPLibrary"))
+                implementation(project(":CMPLibrary"))
+//                implementation("top.writerpass.libs:KMPLibrary:1.0.0")
+//                implementation("top.writerpass.libs:CMPLibrary:1.0.0")
 
 //                implementation(project(":CMPLibrary"))
 //                implementation(project(":KMPLibrary"))

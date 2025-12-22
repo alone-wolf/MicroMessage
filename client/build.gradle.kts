@@ -37,6 +37,7 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 implementation(compose.ui)
+//                implementation(compose.uiUtil)
                 implementation(compose.materialIconsExtended)
                 implementation(compose.animation)
                 implementation(compose.components.resources)
@@ -46,9 +47,10 @@ kotlin {
                 implementation(libs.androidx.lifecycle.viewmodel)
                 implementation(libs.logger.napier)
 
-
-                implementation("top.writerpass.libs:KMPLibrary:1.0.0")
-                implementation("top.writerpass.libs:CMPLibrary:1.0.0")
+                implementation(project(":KMPLibrary"))
+                implementation(project(":CMPLibrary"))
+//                implementation("top.writerpass.libs:KMPLibrary:1.0.0")
+//                implementation("top.writerpass.libs:CMPLibrary:1.0.0")
 
                 // QRCode Generate
                 // https://github.com/alexzhirkevich/qrose
@@ -68,7 +70,6 @@ kotlin {
 
 
                 implementation("org.jetbrains.compose.material3.adaptive:adaptive:1.2.0")
-                implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.5.0-alpha11")
 
                 implementation(libs.kotlinx.datetime)
             }

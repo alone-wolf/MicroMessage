@@ -2,7 +2,6 @@ package top.writerpass.micromessage.client.navigation.pages.main
 
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +13,6 @@ import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Percent
-import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,17 +53,6 @@ object ContactPage : IMainPage {
             LaunchedEffectOdd {
                 microMessageSdkViewModel.getFriends()
             }
-            NavigationSuiteScaffold(
-                navigationSuiteItems = TODO(),
-                modifier = TODO(),
-                layoutType = TODO(),
-                navigationSuiteColors = TODO(),
-                containerColor = TODO(),
-                contentColor = TODO(),
-                state = TODO(),
-                content = TODO()
-            )
-
 
             FullSizeBox {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {

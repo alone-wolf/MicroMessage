@@ -12,8 +12,11 @@ dependencies {
     implementation(project(":shared"))
     implementation(libs.kotlinx.datetime)
 
-    implementation("top.writerpass.libs:KMPLibrary:1.0.0")
-    implementation("top.writerpass.libs:CMPLibrary:1.0.0")
+    implementation(project(":KMPLibrary"))
+//    implementation(project(":CMPLibrary"))
+
+//    implementation("top.writerpass.libs:KMPLibrary:1.0.0")
+//    implementation("top.writerpass.libs:CMPLibrary:1.0.0")
     implementation("io.github.classgraph:classgraph:4.8.184")
     implementation(ktorLibs.serialization.kotlinx.json)
     implementation(ktorLibs.server.core)
